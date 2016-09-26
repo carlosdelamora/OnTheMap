@@ -70,6 +70,9 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Iic-pA-thj" appends="YES" id="Gs4-OR-xsa"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="XST-dL-107" id="e9V-bn-M1t"/>
@@ -79,6 +82,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N1i-u9-noq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Iic-pA-thj">
+                    <connections>
+                        <action selector="userDidTapView:" destination="jW5-lH-1eN" id="HSf-2c-MZ5"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-146.40000000000001" y="162.3688155922039"/>
         </scene>
@@ -178,6 +186,9 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ccz-Yc-DJq">
                                 <frame key="frameInset" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="PMQ-23-nQg" id="YRm-nw-bOL"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

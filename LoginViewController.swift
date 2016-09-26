@@ -17,9 +17,13 @@ class LoginViewController: UIViewController{
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureTextField()
+    }
     
     @IBAction func loginWasPressed(_ sender: AnyObject) {
+        
     
         //userDidTapView(self)
         
@@ -60,10 +64,19 @@ extension LoginViewController: UITextFieldDelegate {
             textField.resignFirstResponder()
         }
     }
-    
+
     @IBAction func userDidTapView(_ sender: AnyObject) {
-        resignIfFirstResponder(emailTextField)
-        resignIfFirstResponder(passwordTextField)
+    resignIfFirstResponder(emailTextField)
+    resignIfFirstResponder(passwordTextField)
     }
+    
 }
 
+
+extension LoginViewController {
+    
+    func configureTextField(){
+         emailTextField.delegate = self
+         passwordTextField.delegate = self
+    }
+}
