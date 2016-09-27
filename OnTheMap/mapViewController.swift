@@ -28,6 +28,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        let navigationController = self.navigationController
+        navigationController?.isNavigationBarHidden = false
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,6 +80,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
+    // The logout action
+    
+    @IBAction func logout(_ sender: AnyObject) {
+    
+        let viewController = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        present(viewController, animated: true, completion: nil)
+    
+    }
+    
     // MARK: - MKMapViewDelegate
     
     // Here we create a view with a "right callout accessory view". You might choose to look into other
@@ -107,6 +124,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
+    
+    
+    
     //    func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
     //
     //        if control == annotationView.rightCalloutAccessoryView {

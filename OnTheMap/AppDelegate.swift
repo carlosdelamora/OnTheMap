@@ -12,7 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-   
+    var sharedSession = URLSession.shared
+    var sessionID: String? = nil
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -45,6 +46,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 
+extension AppDelegate {
+    
+    func tmdbURLFromParameters(_ parameters: [String:AnyObject]) -> URL {
+        
+        var components = URLComponents()
+        components.scheme = Constants.UD.ApiScheme
+        components.host = Constants.UD.ApiHost
+        components.path = Constants.UD.ApiPath //+ (withPathExtension ?? "")
+        components.queryItems = [URLQueryItem]()
+        
+        for (key, value) in parameters {
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            components.queryItems!.append(queryItem)
+        }
+        
+        return components.url!
+    }
 
+}
 
 

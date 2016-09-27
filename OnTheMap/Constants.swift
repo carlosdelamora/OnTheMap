@@ -21,15 +21,9 @@ struct Constants {
     
     // MARK: TMDB Parameter Keys
     struct UDParameterKeys {
-        static let ApiKey = "api_key"
         static let SessionID = "session_id"
         static let Username = "username"
         static let Password = "password"
-    }
-    
-    // MARK: TMDB Parameter Values
-    struct UDParameterValues {
-        static let ApiKey = ""
     }
     
     // MARK: TMDB Response Keys
@@ -37,5 +31,11 @@ struct Constants {
         static let SessionID = "session_id"
         
     }
+
+    struct ParseKeys {
+        static let ApplicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
+        static let APIKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+    }
+    
 
 }

@@ -12,10 +12,12 @@
 		CA40E7D61D9321A50093E55A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA40E7D51D9321A50093E55A /* Assets.xcassets */; };
 		CA40E7D91D9321A50093E55A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA40E7D71D9321A50093E55A /* LaunchScreen.storyboard */; };
 		CA40E7E11D93222E0093E55A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40E7E01D93222E0093E55A /* LoginViewController.swift */; };
-		CA40E7E31D945F8B0093E55A /* Constans.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40E7E21D945F8B0093E55A /* Constans.swift */; };
+		CA40E7E31D945F8B0093E55A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40E7E21D945F8B0093E55A /* Constants.swift */; };
 		CA40E7E71D947CB30093E55A /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40E7E61D947CB30093E55A /* GCD.swift */; };
 		CA5FD96F1D95E16A001EF2F5 /* UDClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD96E1D95E16A001EF2F5 /* UDClient.swift */; };
-		CA5FD9711D997879001EF2F5 /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD9701D997879001EF2F5 /* mapViewController.swift */; };
+		CA5FD9731D99DACF001EF2F5 /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD9721D99DACF001EF2F5 /* ParseClient.swift */; };
+		CA5FD9751D99DB52001EF2F5 /* student.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD9741D99DB52001EF2F5 /* student.swift */; };
+		CA5FD97B1D9AF342001EF2F5 /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD97A1D9AF342001EF2F5 /* mapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,10 +28,12 @@
 		CA40E7D81D9321A50093E55A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA40E7DA1D9321A50093E55A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA40E7E01D93222E0093E55A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
-		CA40E7E21D945F8B0093E55A /* Constans.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constans.swift; sourceTree = "<group>"; };
+		CA40E7E21D945F8B0093E55A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CA40E7E61D947CB30093E55A /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		CA5FD96E1D95E16A001EF2F5 /* UDClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDClient.swift; sourceTree = "<group>"; };
-		CA5FD9701D997879001EF2F5 /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
+		CA5FD9721D99DACF001EF2F5 /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
+		CA5FD9741D99DB52001EF2F5 /* student.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = student.swift; sourceTree = "<group>"; };
+		CA5FD97A1D9AF342001EF2F5 /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +69,10 @@
 				CA40E7CE1D9321A50093E55A /* AppDelegate.swift */,
 				CA5FD96E1D95E16A001EF2F5 /* UDClient.swift */,
 				CA40E7E61D947CB30093E55A /* GCD.swift */,
-				CA5FD9701D997879001EF2F5 /* mapViewController.swift */,
-				CA40E7E21D945F8B0093E55A /* Constans.swift */,
+				CA5FD97A1D9AF342001EF2F5 /* mapViewController.swift */,
+				CA5FD9721D99DACF001EF2F5 /* ParseClient.swift */,
+				CA5FD9741D99DB52001EF2F5 /* student.swift */,
+				CA40E7E21D945F8B0093E55A /* Constants.swift */,
 				CA40E7E01D93222E0093E55A /* LoginViewController.swift */,
 				CA40E7D21D9321A50093E55A /* Main.storyboard */,
 				CA40E7D51D9321A50093E55A /* Assets.xcassets */,
@@ -150,10 +156,12 @@
 			files = (
 				CA5FD96F1D95E16A001EF2F5 /* UDClient.swift in Sources */,
 				CA40E7E11D93222E0093E55A /* LoginViewController.swift in Sources */,
+				CA5FD9731D99DACF001EF2F5 /* ParseClient.swift in Sources */,
 				CA40E7CF1D9321A50093E55A /* AppDelegate.swift in Sources */,
-				CA5FD9711D997879001EF2F5 /* mapViewController.swift in Sources */,
 				CA40E7E71D947CB30093E55A /* GCD.swift in Sources */,
-				CA40E7E31D945F8B0093E55A /* Constans.swift in Sources */,
+				CA40E7E31D945F8B0093E55A /* Constants.swift in Sources */,
+				CA5FD97B1D9AF342001EF2F5 /* mapViewController.swift in Sources */,
+				CA5FD9751D99DB52001EF2F5 /* student.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
