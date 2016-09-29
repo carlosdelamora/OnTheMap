@@ -53,23 +53,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         for dictionary in locations {
             
-            // Notice that the float values are being used to create CLLocationDegree values.
-            // This is a version of the Double type.
-            let lat = CLLocationDegrees(dictionary["latitude"] as! Double)
-            let long = CLLocationDegrees(dictionary["longitude"] as! Double)
-            
-            // The lat and long are used to create a CLLocationCoordinates2D instance.
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            let first = dictionary["firstName"] as! String
-            let last = dictionary["lastName"] as! String
-            let mediaURL = dictionary["mediaURL"] as! String
-            
+            //we first create a student out of the dictionary 
+            let students = student(dictionary)
             // Here we create the annotation and set its coordiate, title, and subtitle properties
+            let coordinate = CLLocationCoordinate2D(latitude: students.latitude , longitude: students.longitude)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = "\(first) \(last)"
-            annotation.subtitle = mediaURL
+            annotation.title = "\(students.firstName) \(students.lastName)"
+            annotation.subtitle = students.mediaURL
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
@@ -84,9 +75,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func logout(_ sender: AnyObject) {
     
-        let viewController = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        present(viewController, animated: true, completion: nil)
-    
+        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod(nil), "DELETE", username: nil, password: nil, hostViewController: self)
+        
     }
     
     // MARK: - MKMapViewDelegate
@@ -127,13 +117,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     
     
-    //    func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-    //
-    //        if control == annotationView.rightCalloutAccessoryView {
-    //            let app = UIApplication.sharedApplication()
-    //            app.openURL(NSURL(string: annotationView.annotation.subtitle))
-    //        }
-    //    }
+  
     
     // MARK: - Sample Data
     

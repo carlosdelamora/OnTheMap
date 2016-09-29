@@ -63,13 +63,8 @@ class UDClient:NSObject{
     
     
     func udacityMethod(_ methodtype: URL, _ type: String, username:String?, password:String?, hostViewController: UIViewController){
-        print("\(username!)")
-        print("\(password!)")
-        //let url = URL(string: methodtype)
-        //let request = NSMutableURLRequest(url:methodtype)
-        let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/api/session")!)
-        print(request)
-        print("\n")
+        
+        let request = NSMutableURLRequest(url: methodtype)
         var jsonData: [String:AnyObject]?
         switch type {
         case "POST":
@@ -143,7 +138,25 @@ class UDClient:NSObject{
             }
             let session = URLSession.shared
             let task = session.dataTask(with: request as URLRequest) { data, response, error in
+                // the udacityClosures gets data response and error returns a dictionary of type [String:AnyObject]?
                 jsonData = self.udacityClosures(data, response, error)
+                
+                func displayError(string: String){
+                    print("String")
+                }
+                guard let logoutDictionary = jsonData?["session"] as? [String:AnyObject]else{
+                    displayError(string: "the session does not exist")
+                    return
+                }
+                guard let logoutSessionID = logoutDictionary["id"] else{
+                    displayError(string: "there is no session id")
+                    return
+                }
+                print(logoutSessionID)
+                let viewController = hostViewController.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                    
+                hostViewController.present(viewController, animated: true, completion: nil)
+                
             }
             task.resume()
         default:

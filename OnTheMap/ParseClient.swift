@@ -14,13 +14,12 @@ class ParseClient: NSObject{
     
     var studentArray = [student]()
     
-    
+    //singleton
     func sharedInstance()->ParseClient{
         struct Singleton{
             static var sharedInstance = ParseClient()
         }
         return Singleton.sharedInstance
     }
-
     
 }

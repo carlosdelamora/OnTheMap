@@ -21,7 +21,7 @@ import Foundation
 */
 
 struct student{
-    let createdAt: Date
+    let createdAt: String
     let firstName: String
     let lastName: String
     let latitude: Double
@@ -29,17 +29,17 @@ struct student{
     let mapSting: String
     let mediaURL: String
     let uniquekey: Int
-    let updateAt: Date
+    let updateAt: String
     
     init(_ dictinary:[String:AnyObject]){
-        self.createdAt = dictinary["createdAt"] as! Date
+        self.createdAt = dictinary["createdAt"] as! String
         self.firstName = dictinary["firstName"] as! String
         self.lastName = dictinary["lastName"] as! String
         self.latitude = dictinary["latitude"] as! Double
         self.longitude = dictinary["longitude"] as! Double
-        self.mapSting = dictinary["mapSting"] as! String
+        self.mapSting = dictinary["mapString"] as! String
         self.mediaURL = dictinary["mediaURL"] as! String
-        self.uniquekey = dictinary["uniquekey"] as! Int
-        self.updateAt = dictinary["updateAt"] as! Date
+        self.uniquekey = dictinary["uniqueKey"] as! Int
+        self.updateAt = dictinary["updatedAt"] as! String
     }
 }
