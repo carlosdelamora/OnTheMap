@@ -75,7 +75,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func logout(_ sender: AnyObject) {
     
-        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod(nil), "DELETE", username: nil, password: nil, hostViewController: self)
+        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
         
     }
     

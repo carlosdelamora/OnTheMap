@@ -31,7 +31,7 @@ class LoginViewController: UIViewController{
             //debugTextLabel.text = "Username or Password Empty."
             print("Username or Password Empty.")
         } else {
-            UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod(nil), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
+            UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
             completeLogin()
         }
     }

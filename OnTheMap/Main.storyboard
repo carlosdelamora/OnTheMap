@@ -371,7 +371,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="K2B-U4-TAs">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="tu3-9q-WxL"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="tu3-9q-WxL">
+                            <connections>
+                                <action selector="cancelButton:" destination="cXM-DJ-iWn" id="Jdb-tI-9Xr"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -397,6 +401,6 @@
         <image name="udacity" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="duY-OF-V1l"/>
+        <segue reference="ewA-O0-5Gu"/>
     </inferredMetricsTieBreakers>
 </document>

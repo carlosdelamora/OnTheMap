@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 import UIKit
 
-//my user id is 2412918542
+
 class PostingControllView:UIViewController, UITextViewDelegate{
     /*
      "createdAt" : "2015-02-24T22:27:14.456Z" as AnyObject,
@@ -34,12 +34,11 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     @IBOutlet weak var mapLocationText: UITextView!
     @IBOutlet weak var URLTextView: UITextView!
     
-    func resetToInitalConditions(){
-        mapLocationText.text = "Enter Your Location Here"
-        URLTextView.text = "Enter a Link to Share Here"
+    
+    @IBAction func cancelButton(_ sender: AnyObject) {
+        let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+        present(Controller!, animated: true, completion: nil)
     }
-    
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -49,10 +48,23 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     
     @IBAction func findOnTheMap(_ sender: AnyObject) {
         initialView.isHidden = true
+        studentArray["mapString"] = mapLocationText.text as AnyObject
     }
     
     @IBAction func SubmitButton(_ sender: AnyObject) {
-       print(UDClient.sharedInstance().userID)
+       //We got the firstname and lastname of the user set it up to student in this class
+       //TODO: fix my user id 2412918542
+        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/2412918542"/*\(UDClient.sharedInstance().userID!)"*/), "GET", username: nil, password: nil, hostViewController: self)
+       studentArray["mediaURL"] = URLTextView.text as AnyObject
+       let currentDate = Date()
+       let dateFormatter = DateFormatter()
+       dateFormatter.dateFormat = "YYY-MM-dd'T'HH:mm:SS.SSSS"
+       let createdAt = dateFormatter.string(from: currentDate)
+       studentArray["updatedAt"] = createdAt as AnyObject
+       //TODO: Ckeck that has not been created before
+       studentArray["createdAt"] = createdAt as AnyObject
+        
+        
     }
 
     @IBAction func theUserTaped(_ sender: AnyObject) {
@@ -60,4 +72,28 @@ class PostingControllView:UIViewController, UITextViewDelegate{
         print("the user taped")
     }
     
+    
+    
+    
+    
+    func resetToInitalConditions(){
+        mapLocationText.text = "Enter Your Location Here"
+        URLTextView.text = "Enter a Link to Share Here"
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if mapLocationText.isFirstResponder && numberOfEditsLocationText == 0{
+            mapLocationText.text = ""
+            numberOfEditsLocationText = 1
+        }
+        
+        if URLTextView.isFirstResponder && numberOfEditsURLText == 0{
+            URLTextView.text = ""
+            numberOfEditsURLText = 1
+        }
+        
+    }
+    
+
 }

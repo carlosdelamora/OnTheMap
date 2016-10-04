@@ -66,6 +66,8 @@ class UDClient:NSObject{
         
         let request = NSMutableURLRequest(url: methodtype)
         var jsonData: [String:AnyObject]?
+        print(methodtype)
+        print("\(type)")
         switch type {
         case "POST":
             request.httpMethod = "POST"
@@ -159,12 +161,41 @@ class UDClient:NSObject{
                 
             }
             task.resume()
+        case "GET": //https://www.udacity.com/api/session/users/2412918542
+            print("We are in case GET")
+            let session = URLSession.shared
+            let task = session.dataTask(with: request as URLRequest) { data, response, error in
+                jsonData = self.udacityClosures(data, response, error)
+                
+                guard let user = jsonData?["user"] as? [String:AnyObject] else{
+                    print("We could not find user")
+                    return
+                }
+                guard let firstName = user["first_name"] else{
+                    print("we can not find the first_name")
+                    return
+                }
+                guard let lastName = user["last_name"] else{
+                    print("we can not find the last_name")
+                    return
+                }
+                
+                let PostingController = hostViewController as! PostingControllView
+                
+                PostingController.studentArray["firstName"] = firstName
+                PostingController.studentArray["lastName"] = lastName
+                print(lastName)
+                print(firstName)
+                
+            }
+            task.resume()
         default:
             print("Do not recognize the method type")
         }
     }
 
     
+
     
     
 }
