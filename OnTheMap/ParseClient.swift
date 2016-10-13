@@ -22,4 +22,6 @@ class ParseClient: NSObject{
         return Singleton.sharedInstance
     }
     
+    
+    
 }

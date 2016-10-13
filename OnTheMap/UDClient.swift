@@ -34,6 +34,7 @@ class UDClient:NSObject{
         return components.url!
     }
     
+    //we use this method to parse data into an object of type [String:Anyobject] out of the udacity methods
     func udacityClosures(_ data: Data?, _ response:URLResponse?, _ error:Error?)->[String: AnyObject]?{
         
         var jsonData: Any!
@@ -180,12 +181,19 @@ class UDClient:NSObject{
                     return
                 }
                 
+                guard let key = user["key"] else{
+                    print("we can not find the last bame")
+                    return
+                }
+                
                 let PostingController = hostViewController as! PostingControllView
                 
-                PostingController.studentArray["firstName"] = firstName
-                PostingController.studentArray["lastName"] = lastName
+                PostingController.studentArray["firstName"] = firstName as AnyObject
+                PostingController.studentArray["lastName"] = lastName as AnyObject
+                PostingController.studentArray["uniqueKey"] = key as AnyObject
                 print(lastName)
                 print(firstName)
+                print(key)
                 
             }
             task.resume()

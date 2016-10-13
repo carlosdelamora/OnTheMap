@@ -130,13 +130,13 @@
         <!--On The Map-->
         <scene sceneID="Nw3-un-lIa">
             <objects>
-                <tableViewController id="HUj-XB-3K3" sceneMemberID="viewController">
+                <tableViewController id="HUj-XB-3K3" customClass="TableViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="iQR-eR-KjF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="kEm-Sh-emf">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="kEm-Sh-emf">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kEm-Sh-emf" id="Cni-ZH-KX1">
@@ -382,6 +382,7 @@
                         <outlet property="URLTextView" destination="eeV-3Z-b70" id="5cs-es-r2K"/>
                         <outlet property="initialView" destination="uh2-Xb-KKg" id="pq3-g3-3jT"/>
                         <outlet property="mapLocationText" destination="anW-2c-UaD" id="gRk-uS-Bar"/>
+                        <outlet property="mapView" destination="RSj-vX-ZKJ" id="40d-Bk-gqt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yvk-na-YQ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -401,6 +402,6 @@
         <image name="udacity" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ewA-O0-5Gu"/>
+        <segue reference="duY-OF-V1l"/>
     </inferredMetricsTieBreakers>
 </document>

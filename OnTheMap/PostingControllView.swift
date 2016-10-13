@@ -27,13 +27,13 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     
     var numberOfEditsLocationText = 0
     var numberOfEditsURLText = 0
-    
     var newStudent:student?
     var studentArray = [String: AnyObject]()
+    
     @IBOutlet weak var initialView: UIView!
     @IBOutlet weak var mapLocationText: UITextView!
     @IBOutlet weak var URLTextView: UITextView!
-    
+    @IBOutlet weak var mapView: MKMapView!
     
     @IBAction func cancelButton(_ sender: AnyObject) {
         let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
@@ -49,10 +49,52 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     @IBAction func findOnTheMap(_ sender: AnyObject) {
         initialView.isHidden = true
         studentArray["mapString"] = mapLocationText.text as AnyObject
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = mapLocationText.text
+        request.region = mapView.region
+        let search = MKLocalSearch(request: request)
+        var placemark : MKPlacemark? = nil
+        search.start { response, _ in
+            //function to display an error if the place is not found
+            func displayError(string:String){
+                print(string)
+                self.initialView.isHidden = false
+                let  alertController = UIAlertController()
+                alertController.title = "Not found"
+                alertController.message = "We were not able to find the location, please try again"
+                self.present(alertController, animated:true,completion: nil)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                        alertController.dismiss(animated: true, completion: nil)
+                    }))
+                }
+            
+            guard let response = response else {
+                displayError(string:"There was no response")
+                return
+            }
+            
+            placemark = response.mapItems[0].placemark
+            print("this is the response =\(response)")
+            print("this is the placemark \(placemark)")
+            //self.matchingItems = response.mapItems
+        
+        
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = placemark!.coordinate
+            annotation.title = placemark?.name
+            if let city = placemark?.locality,
+                let state = placemark?.administrativeArea {
+                annotation.subtitle = "\(city) \(state)"
+            }
+            self.mapView.addAnnotation(annotation)
+            let span = MKCoordinateSpanMake(0.05, 0.05)
+            let region = MKCoordinateRegionMake(placemark!.coordinate, span)
+            self.mapView.setRegion(region, animated: true)
+        }
     }
     
     @IBAction func SubmitButton(_ sender: AnyObject) {
-       //We got the firstname and lastname of the user set it up to student in this class
+       //Using the GET method we got the firstname and lastname of the user set it up to student in this class
        //TODO: fix my user id 2412918542
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/2412918542"/*\(UDClient.sharedInstance().userID!)"*/), "GET", username: nil, password: nil, hostViewController: self)
        studentArray["mediaURL"] = URLTextView.text as AnyObject
@@ -63,18 +105,13 @@ class PostingControllView:UIViewController, UITextViewDelegate{
        studentArray["updatedAt"] = createdAt as AnyObject
        //TODO: Ckeck that has not been created before
        studentArray["createdAt"] = createdAt as AnyObject
-        
-        
+       studentArray["mapString"] = mapLocationText.text as AnyObject
     }
 
     @IBAction func theUserTaped(_ sender: AnyObject) {
         mapLocationText.resignFirstResponder()
         print("the user taped")
     }
-    
-    
-    
-    
     
     func resetToInitalConditions(){
         mapLocationText.text = "Enter Your Location Here"

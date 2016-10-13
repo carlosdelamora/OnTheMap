@@ -19,6 +19,7 @@
 		CA5FD97B1D9AF342001EF2F5 /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD97A1D9AF342001EF2F5 /* mapViewController.swift */; };
 		CA5FD97D1D9AFA2F001EF2F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA5FD97C1D9AFA2F001EF2F5 /* Main.storyboard */; };
 		CA5FD97F1D9C2BDA001EF2F5 /* PostingControllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FD97E1D9C2BDA001EF2F5 /* PostingControllView.swift */; };
+		CA8E9EEE1DAEFA1C0000E570 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8E9EED1DAEFA1C0000E570 /* TableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		CA5FD97A1D9AF342001EF2F5 /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
 		CA5FD97C1D9AFA2F001EF2F5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CA5FD97E1D9C2BDA001EF2F5 /* PostingControllView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostingControllView.swift; sourceTree = "<group>"; };
+		CA8E9EED1DAEFA1C0000E570 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				CA40E7E01D93222E0093E55A /* LoginViewController.swift */,
 				CA5FD97A1D9AF342001EF2F5 /* mapViewController.swift */,
 				CA40E7E61D947CB30093E55A /* GCD.swift */,
+				CA8E9EED1DAEFA1C0000E570 /* TableViewController.swift */,
 				CA5FD97E1D9C2BDA001EF2F5 /* PostingControllView.swift */,
 				CA40E7D51D9321A50093E55A /* Assets.xcassets */,
 				CA5FD97C1D9AFA2F001EF2F5 /* Main.storyboard */,
@@ -160,6 +163,7 @@
 				CA5FD96F1D95E16A001EF2F5 /* UDClient.swift in Sources */,
 				CA5FD97F1D9C2BDA001EF2F5 /* PostingControllView.swift in Sources */,
 				CA40E7E11D93222E0093E55A /* LoginViewController.swift in Sources */,
+				CA8E9EEE1DAEFA1C0000E570 /* TableViewController.swift in Sources */,
 				CA5FD9731D99DACF001EF2F5 /* ParseClient.swift in Sources */,
 				CA40E7CF1D9321A50093E55A /* AppDelegate.swift in Sources */,
 				CA40E7E71D947CB30093E55A /* GCD.swift in Sources */,
