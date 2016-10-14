@@ -35,7 +35,7 @@ class UDClient:NSObject{
     }
     
     //we use this method to parse data into an object of type [String:Anyobject] out of the udacity methods
-    func udacityClosures(_ data: Data?, _ response:URLResponse?, _ error:Error?)->[String: AnyObject]?{
+    func closures(_ data: Data?, _ response:URLResponse?, _ error:Error?)->[String: AnyObject]?{
         
         var jsonData: Any!
         guard (error == nil) else {
@@ -77,7 +77,7 @@ class UDClient:NSObject{
             request.httpBody = "{\"udacity\": {\"username\":\"\(username!)\", \"password\": \"\(password!)\"}}".data(using: String.Encoding.utf8)
             let session = URLSession.shared
             let task = session.dataTask(with: request as URLRequest) { data, response, error in
-                jsonData = self.udacityClosures(data, response, error)
+                jsonData = self.closures(data, response, error)
                 
                 func displayError(string:String){
                     print(string)
@@ -142,7 +142,7 @@ class UDClient:NSObject{
             let session = URLSession.shared
             let task = session.dataTask(with: request as URLRequest) { data, response, error in
                 // the udacityClosures gets data response and error returns a dictionary of type [String:AnyObject]?
-                jsonData = self.udacityClosures(data, response, error)
+                jsonData = self.closures(data, response, error)
                 
                 func displayError(string: String){
                     print("String")
@@ -166,7 +166,7 @@ class UDClient:NSObject{
             print("We are in case GET")
             let session = URLSession.shared
             let task = session.dataTask(with: request as URLRequest) { data, response, error in
-                jsonData = self.udacityClosures(data, response, error)
+                jsonData = self.closures(data, response, error)
                 
                 guard let user = jsonData?["user"] as? [String:AnyObject] else{
                     print("We could not find user")

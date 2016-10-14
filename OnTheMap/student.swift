@@ -26,20 +26,20 @@ struct student{
     let lastName: String
     let latitude: Double
     let longitude: Double
-    let mapSting: String
+    let mapString: String
     let mediaURL: String
-    let uniquekey: Int
+    let uniquekey: String
     let updateAt: String
     
-    init(_ dictinary:[String:AnyObject]){
-        self.createdAt = dictinary["createdAt"] as! String
-        self.firstName = dictinary["firstName"] as! String
-        self.lastName = dictinary["lastName"] as! String
-        self.latitude = dictinary["latitude"] as! Double
-        self.longitude = dictinary["longitude"] as! Double
-        self.mapSting = dictinary["mapString"] as! String
-        self.mediaURL = dictinary["mediaURL"] as! String
-        self.uniquekey = dictinary["uniqueKey"] as! Int
-        self.updateAt = dictinary["updatedAt"] as! String
+    init(_ dictionary:[String:AnyObject]){
+        self.createdAt = dictionary["createdAt"] as! String
+        self.firstName = dictionary["firstName"] as! String
+        self.lastName = dictionary["lastName"] as! String
+        self.latitude = dictionary["latitude"] as! Double
+        self.longitude = dictionary["longitude"] as! Double
+        self.mapString = dictionary["mapString"] as! String
+        self.mediaURL = dictionary["mediaURL"] as! String
+        self.uniquekey = String(describing: dictionary["uniqueKey"])
+        self.updateAt = dictionary["updatedAt"] as! String
     }
 }

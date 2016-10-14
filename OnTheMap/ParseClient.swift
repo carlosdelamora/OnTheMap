@@ -13,6 +13,8 @@ class ParseClient: NSObject{
     
     
     var studentArray = [student]()
+    //myStudent is the student I will create with the information of the user.
+    var myStudent: student? = nil
     
     //singleton
     func sharedInstance()->ParseClient{
