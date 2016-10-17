@@ -39,31 +39,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // The "locations" array is an array of dictionary objects that are similar to the JSON
-        // data that you can download from parse.
-        let locations = hardCodedLocationData()
-        
-        // We will create an MKPointAnnotation for each dictionary in "locations". The
-        // point annotations will be stored in this array, and then provided to the map view.
+        //We create annotations to go on the map
         var annotations = [MKPointAnnotation]()
-        
-        // The "locations" array is loaded with the sample data below. We are using the dictionaries
-        // to create map annotations. This would be more stylish if the dictionaries were being
-        // used to create custom structs. Perhaps StudentLocation structs.
-        
-        for dictionary in locations {
-            
-            //we first create a student out of the dictionary 
-            let students = student(dictionary)
-            // Here we create the annotation and set its coordiate, title, and subtitle properties
-            let coordinate = CLLocationCoordinate2D(latitude: students.latitude , longitude: students.longitude)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(students.firstName) \(students.lastName)"
-            annotation.subtitle = students.mediaURL
-            
-            // Finally we place the annotation in an array of annotations.
-            annotations.append(annotation)
+        //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
+        for students in ParseClient.sharedInstance().studentArray{
+            annotations.append(students.annotation)
         }
         
         // When the array is complete, we add the annotations to the map.
@@ -76,7 +56,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBAction func logout(_ sender: AnyObject) {
     
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
-        
+        UDClient.sharedInstance().logoutPressed = true 
+        print("logout was pressed")
     }
     
     // MARK: - MKMapViewDelegate
@@ -124,7 +105,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // Some sample data. This is a dictionary that is more or less similar to the
     // JSON data that you will download from Parse.
     
-    func hardCodedLocationData() -> [[String : AnyObject]] {
+    /*func hardCodedLocationData() -> [[String : AnyObject]] {
         return  [
             [
                 "createdAt" : "2015-02-24T22:27:14.456Z" as AnyObject,
@@ -172,5 +153,5 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 "updatedAt" : "2015-03-13T03:37:58.389Z" as AnyObject
             ]
         ]
-    }
+    }*/
 }

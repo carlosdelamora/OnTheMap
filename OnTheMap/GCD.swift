@@ -13,3 +13,20 @@ func performUIUpdatesOnMain(_ updates: @escaping () -> Void) {
         updates()
     }
 }
+
+
+func performUpdatesOnMainSync(_ updates: @escaping () -> Void ){
+    DispatchQueue.main.sync {
+        updates()
+    }
+}
+
+
+
+func perfromUpdatesInTheBackground(_ updates: @escaping () -> Void) {
+    DispatchQueue.global().async {
+        updates()
+    }
+    
+    
+}

@@ -14,6 +14,7 @@ class UDClient:NSObject{
     let session = URLSession.shared
     var sessionID : String? = nil
     var userID : Int? = nil
+    var logoutPressed: Bool = false 
     
     override init() {
         super.init()
@@ -90,12 +91,7 @@ class UDClient:NSObject{
                         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
                             alertController.dismiss(animated: true, completion: nil)
                         }))
-                    
-                    
                     }
-                    
-                    
-                    
                 }
                 
                 guard let sessionDirctionary = jsonData?["session"] as? [String:AnyObject]else{
@@ -122,6 +118,11 @@ class UDClient:NSObject{
                     print(accountDictionary["key"])
                     print(accountDictionary["key"] as? Int)
                     return
+                }
+                
+                performUIUpdatesOnMain {
+                    let tabBarController = hostViewController.storyboard!.instantiateViewController(withIdentifier: "Tab Bar Controller") as! UITabBarController
+                        hostViewController.present(tabBarController, animated: true, completion: nil)
                 }
                 
                 self.userID = Int(number)!
@@ -155,11 +156,15 @@ class UDClient:NSObject{
                     displayError(string: "there is no session id")
                     return
                 }
-                print(logoutSessionID)
+                
+               
+                performUIUpdatesOnMain {
+                    print(logoutSessionID)
+                
                 let viewController = hostViewController.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
                     
                 hostViewController.present(viewController, animated: true, completion: nil)
-                
+                }
             }
             task.resume()
         case "GET": //https://www.udacity.com/api/session/users/2412918542

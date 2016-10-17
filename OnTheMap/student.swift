@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MapKit
 /*
  "createdAt" : "2015-02-24T22:27:14.456Z" as AnyObject,
  "firstName" : "Jessica" as AnyObject,
@@ -30,7 +31,7 @@ struct student{
     let mediaURL: String
     let uniquekey: String
     let updateAt: String
-    
+    let annotation = MKPointAnnotation()
     init(_ dictionary:[String:AnyObject]){
         self.createdAt = dictionary["createdAt"] as! String
         self.firstName = dictionary["firstName"] as! String
@@ -41,5 +42,11 @@ struct student{
         self.mediaURL = dictionary["mediaURL"] as! String
         self.uniquekey = String(describing: dictionary["uniqueKey"])
         self.updateAt = dictionary["updatedAt"] as! String
+        let coordinates = CLLocationCoordinate2D(latitude: self.latitude , longitude: self.longitude)
+        self.annotation.coordinate = coordinates
+        self.annotation.title = "\(self.firstName) \(self.lastName)"
+        self.annotation.subtitle = self.mediaURL
+
+        
     }
 }

@@ -37,5 +37,14 @@ struct Constants {
         static let APIKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
     }
     
+    //https://parse.udacity.com/parse/classes/StudentLocation?where={"uniqueKey":"1234"}
+    struct Parse{
+        
+        static let ApiScheme = "https"
+        static let ApiHost = "parse.udacity.com"
+        static let ApiPath = "/parse/classes/StudentLocation"
+    }
+    
+    
 
 }

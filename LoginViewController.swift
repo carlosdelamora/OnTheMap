@@ -20,6 +20,12 @@ class LoginViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextField()
+        //we do not want to send a request when the logout button is pressed only when the app loads for the first time
+        if !UDClient.sharedInstance().logoutPressed{
+            let parametersFor100 = ["limit":100 as AnyObject]
+            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil), self)
+            UDClient.sharedInstance().logoutPressed = false
+        }
     }
     
     @IBAction func loginWasPressed(_ sender: AnyObject) {
@@ -31,15 +37,9 @@ class LoginViewController: UIViewController{
             //debugTextLabel.text = "Username or Password Empty."
             print("Username or Password Empty.")
         } else {
+            print("login was pressed")
             UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
-            completeLogin()
-        }
-    }
-    
-    func completeLogin(){
-        performUIUpdatesOnMain {
-            let tabBarController = self.storyboard!.instantiateViewController(withIdentifier: "Tab Bar Controller") as! UITabBarController
-            self.present(tabBarController, animated: true, completion: nil)
+            
         }
     }
 }
