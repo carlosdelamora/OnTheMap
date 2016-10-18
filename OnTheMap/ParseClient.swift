@@ -15,6 +15,7 @@ class ParseClient: NSObject{
     var studentArray = [student]()
     //myStudent is the student I will create with the information of the user in my PostingViewController.
     var myStudent: student? = nil
+    var dictionaryOfMyStudent = [String: AnyObject]()
     
     override init() {
         super.init()
@@ -105,6 +106,7 @@ class ParseClient: NSObject{
                 //self.myStudent = student(localStudentArray[0])
                 //TODO Write the correct alert view controller
                 if localStudentArray.count > 0 {
+                    self.myStudent = student(localStudentArray[0])
                     let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
                     //alertController.title = ""
                     //alertController.message = "You have already posted a Student Location"
@@ -122,6 +124,7 @@ class ParseClient: NSObject{
                         let navigationPostController = hostViewController.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
                             hostViewController.present(navigationPostController!, animated: true)
                         }))
+                        
    
                     }
                 }else{

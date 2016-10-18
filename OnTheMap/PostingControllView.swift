@@ -27,8 +27,8 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     
     var numberOfEditsLocationText = 0
     var numberOfEditsURLText = 0
-    var newStudent:student?
-    var studentArray = [String: AnyObject]()
+    var myStudent:student?
+    //var studentArray = [String: AnyObject]()
     
     @IBOutlet weak var initialView: UIView!
     @IBOutlet weak var mapLocationText: UITextView!
@@ -47,14 +47,14 @@ class PostingControllView:UIViewController, UITextViewDelegate{
         resetToInitalConditions()
         
         //Using the GET method we got the firstname and lastname of the user set it up to student in this class
-        /*performUpdatesInTheBackground {
+        
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/\(UDClient.sharedInstance().userID!)"), "GET", username: nil, password: nil, hostViewController: self)
-        }*/
+        
     }
     
     @IBAction func findOnTheMap(_ sender: AnyObject) {
         initialView.isHidden = true
-        studentArray["mapString"] = mapLocationText.text as AnyObject
+        ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
         let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = mapLocationText.text
         request.region = mapView.region
@@ -80,6 +80,8 @@ class PostingControllView:UIViewController, UITextViewDelegate{
             }
             
             placemark = response.mapItems[0].placemark
+            ParseClient.sharedInstance().dictionaryOfMyStudent["latitude"] = placemark?.coordinate.latitude as AnyObject
+            ParseClient.sharedInstance().dictionaryOfMyStudent["longitude"] = placemark?.coordinate.longitude as AnyObject
             print("this is the response =\(response)")
             print("this is the placemark \(placemark)")
             //self.matchingItems = response.mapItems
@@ -101,15 +103,30 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     
     @IBAction func SubmitButton(_ sender: AnyObject) {
        
-       studentArray["mediaURL"] = URLTextView.text as AnyObject
+       ParseClient.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
        let currentDate = Date()
        let dateFormatter = DateFormatter()
        dateFormatter.dateFormat = "YYY-MM-dd'T'HH:mm:SS.SSSS"
-       let createdAt = dateFormatter.string(from: currentDate)
-       studentArray["updatedAt"] = createdAt as AnyObject
-       //TODO: Ckeck that has not been created before
-       studentArray["createdAt"] = createdAt as AnyObject
-       studentArray["mapString"] = mapLocationText.text as AnyObject
+       let updatedAt = dateFormatter.string(from: currentDate)
+       ParseClient.sharedInstance().dictionaryOfMyStudent["updatedAt"] = updatedAt as AnyObject
+       //If has been created before we keep the createdAt
+       if ParseClient.sharedInstance().myStudent != nil{
+           ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = ParseClient.sharedInstance().myStudent?.createdAt as AnyObject
+       }else{
+           //if this is the first time we create this object we get that updatedAt is the same as createdAt
+           ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = updatedAt as AnyObject
+       }
+       ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
+       ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
+       self.myStudent = ParseClient.sharedInstance().myStudent
+       //We post myStudent
+        ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod([String:AnyObject](), nil), "POST", self)
+        
+        /*//performUIUpdatesOnMain {
+       //return back to mapViewController once the myStudents has been created 
+            let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+            self.present(Controller!, animated: true, completion: nil)
+       // }*/
     }
 
     @IBAction func theUserTaped(_ sender: AnyObject) {

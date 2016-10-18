@@ -191,11 +191,11 @@ class UDClient:NSObject{
                     return
                 }
                 
-                let PostingController = hostViewController as! PostingControllView
+                //let PostingController = hostViewController as! PostingControllView
                 
-                PostingController.studentArray["firstName"] = firstName as AnyObject
-                PostingController.studentArray["lastName"] = lastName as AnyObject
-                PostingController.studentArray["uniqueKey"] = key as AnyObject
+                ParseClient.sharedInstance().dictionaryOfMyStudent["firstName"] = firstName as AnyObject
+                ParseClient.sharedInstance().dictionaryOfMyStudent["lastName"] = lastName as AnyObject
+                ParseClient.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = key as AnyObject
                 print(lastName)
                 print(firstName)
                 print(key)

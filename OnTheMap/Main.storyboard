@@ -197,7 +197,7 @@
         <!--Map-->
         <scene sceneID="tBf-wY-sUa">
             <objects>
-                <navigationController id="ZdC-2A-dcz" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MapNavigationController" id="ZdC-2A-dcz" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" image="map" selectedImage="map" id="QxE-MT-ZjA"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ggu-D6-Ty1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

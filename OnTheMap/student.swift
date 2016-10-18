@@ -29,6 +29,7 @@ struct student{
     let longitude: Double
     let mapString: String
     let mediaURL: String
+    let objectId: String
     let uniquekey: String
     let updateAt: String
     let annotation = MKPointAnnotation()
@@ -40,6 +41,7 @@ struct student{
         self.longitude = dictionary["longitude"] as! Double
         self.mapString = dictionary["mapString"] as! String
         self.mediaURL = dictionary["mediaURL"] as! String
+        self.objectId = dictionary["objectId"] as! String 
         self.uniquekey = String(describing: dictionary["uniqueKey"])
         self.updateAt = dictionary["updatedAt"] as! String
         let coordinates = CLLocationCoordinate2D(latitude: self.latitude , longitude: self.longitude)

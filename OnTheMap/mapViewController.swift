@@ -55,8 +55,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //We create annotations to go on the map
         var annotations = [MKPointAnnotation]()
+        //check if we have a myStudent
+        if ParseClient.sharedInstance().myStudent != nil{
+            //annotations.append((ParseClient.sharedInstance().myStudent?.annotation)!)
+            ParseClient.sharedInstance().studentArray.append(ParseClient.sharedInstance().myStudent!)
+        }
         //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
         for students in ParseClient.sharedInstance().studentArray{
             annotations.append(students.annotation)
