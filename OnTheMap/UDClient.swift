@@ -126,6 +126,7 @@ class UDClient:NSObject{
                 }
                 
                 self.userID = Int(number)!
+                ParseClient.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = Int(number)! as AnyObject
                 print(self.userID)
                 
             }

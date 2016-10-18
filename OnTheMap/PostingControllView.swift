@@ -27,7 +27,7 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     
     var numberOfEditsLocationText = 0
     var numberOfEditsURLText = 0
-    var myStudent:student?
+    //var myStudent:student?
     //var studentArray = [String: AnyObject]()
     
     @IBOutlet weak var initialView: UIView!
@@ -80,8 +80,8 @@ class PostingControllView:UIViewController, UITextViewDelegate{
             }
             
             placemark = response.mapItems[0].placemark
-            ParseClient.sharedInstance().dictionaryOfMyStudent["latitude"] = placemark?.coordinate.latitude as AnyObject
-            ParseClient.sharedInstance().dictionaryOfMyStudent["longitude"] = placemark?.coordinate.longitude as AnyObject
+            ParseClient.sharedInstance().dictionaryOfMyStudent["latitude"] = placemark!.coordinate.latitude as AnyObject
+            ParseClient.sharedInstance().dictionaryOfMyStudent["longitude"] = placemark!.coordinate.longitude as AnyObject
             print("this is the response =\(response)")
             print("this is the placemark \(placemark)")
             //self.matchingItems = response.mapItems
@@ -104,7 +104,7 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     @IBAction func SubmitButton(_ sender: AnyObject) {
        
        ParseClient.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
-       let currentDate = Date()
+       /*let currentDate = Date()
        let dateFormatter = DateFormatter()
        dateFormatter.dateFormat = "YYY-MM-dd'T'HH:mm:SS.SSSS"
        let updatedAt = dateFormatter.string(from: currentDate)
@@ -115,12 +115,12 @@ class PostingControllView:UIViewController, UITextViewDelegate{
        }else{
            //if this is the first time we create this object we get that updatedAt is the same as createdAt
            ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = updatedAt as AnyObject
-       }
+       }*/
        ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
-       ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
-       self.myStudent = ParseClient.sharedInstance().myStudent
+       //ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
+       //self.myStudent = ParseClient.sharedInstance().myStudent
        //We post myStudent
-        ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod([String:AnyObject](), nil), "POST", self)
+        ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, nil), "POST", self)
         
         /*//performUIUpdatesOnMain {
        //return back to mapViewController once the myStudents has been created 

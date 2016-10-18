@@ -29,14 +29,18 @@ class ParseClient: NSObject{
     }
 
     //the function creates a URL that is ASCII character
-    func URLParseMethod(_ parameters: [String: AnyObject], _ pathExtension: String?) -> URL {
+    func URLParseMethod(_ parameters: [String: AnyObject]?, _ pathExtension: String?) -> URL {
         
         var components = URLComponents()
         components.scheme = Constants.Parse.ApiScheme
         components.host = Constants.Parse.ApiHost
         components.path = Constants.Parse.ApiPath + (pathExtension ?? "")
-        components.queryItems = [URLQueryItem]()
         
+        guard let parameters = parameters else{
+            return components.url!
+            
+        }
+        components.queryItems = [URLQueryItem]()
         for (key, value) in parameters {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.queryItems!.append(queryItem)
@@ -146,13 +150,15 @@ class ParseClient: NSObject{
         
         let request = NSMutableURLRequest(url: methodtype)
         var jsonData: [String:AnyObject]?
-        print("the methodtype is \(methodtype)")
+        print("the methodtype is \(methodtype), type \(type)")
         request.httpMethod = type
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"\(myStudent!.uniquekey)\", \"firstName\": \"\(myStudent!.firstName)\", \"lastName\": \"\(myStudent!.lastName)\",\"mapString\": \"\(myStudent!.mapString)\", \"mediaURL\": \"\(myStudent!.mediaURL)\",\"latitude\":\(myStudent!.latitude), \"longitude\": \(myStudent!.longitude)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+        print(dictionaryOfMyStudent)
+        request.httpBody = "{\"uniqueKey\": \"\( dictionaryOfMyStudent["uniqueKey"]!)\", \"firstName\": \"\(dictionaryOfMyStudent["firstName"]!)\", \"lastName\": \"\(dictionaryOfMyStudent["lastName"]!)\",\"mapString\": \"\(dictionaryOfMyStudent["mapString"])\", \"mediaURL\": \"\(dictionaryOfMyStudent["mediaURL"]!)\",\"latitude\":\(dictionaryOfMyStudent["latitude"]!), \"longitude\": \(dictionaryOfMyStudent["longitude"]!)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         let session = URLSession.shared
+        print("this is the unique key \(dictionaryOfMyStudent["uniqueKey"]!)")
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
         jsonData = self.closures(data, response, error)
             
@@ -160,12 +166,26 @@ class ParseClient: NSObject{
                 print(string)
             }
             
-            
-            guard (jsonData?["objectId"] != nil) else{
+            //this is what we do for post
+            guard let objectId = jsonData?["objectId"] else{
                 if type == "POST"{
                     displayError(string: "error with the post method")
                 }
                 return
+            }
+            
+            self.dictionaryOfMyStudent["objectId"] = objectId
+            
+            guard let createdAt = jsonData?["createdAt"] else{
+                print("we could not find createdAt")
+                return
+            }
+            
+            self.dictionaryOfMyStudent["createdAt"] = createdAt
+            self.dictionaryOfMyStudent["updatedAt"] = createdAt
+            if type == "POST"{
+                self.myStudent = student(self.dictionaryOfMyStudent)
+                print("student was posted")
             }
             
             guard (jsonData?["updatedAt"] != nil) else{
