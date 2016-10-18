@@ -23,7 +23,7 @@ func performUpdatesOnMainSync(_ updates: @escaping () -> Void ){
 
 
 
-func perfromUpdatesInTheBackground(_ updates: @escaping () -> Void) {
+func performUpdatesInTheBackground(_ updates: @escaping () -> Void) {
     DispatchQueue.global().async {
         updates()
     }

@@ -12,6 +12,7 @@ import UIKit
 class TableViewController: UITableViewController{
     
     
+    
     @IBAction func logoutButton(_ sender: AnyObject) {
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
         UDClient.sharedInstance().logoutPressed = true
@@ -26,11 +27,19 @@ class TableViewController: UITableViewController{
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")! as! Cell
         let aStudent = ParseClient.sharedInstance().studentArray[indexPath.row]
-        cell.textLabel?.text = aStudent.firstName + " " + aStudent.lastName
+        cell.nameLabel.text = aStudent.firstName + " " + aStudent.lastName
         return cell 
     }
     
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let aStudent = ParseClient.sharedInstance().studentArray[indexPath.row]
+        let app = UIApplication.shared
+        if let url = URL(string: aStudent.mediaURL) {
+            app.open( url, options: [String : Any](), completionHandler: nil)
+        }
+    }
     
 }

@@ -102,11 +102,39 @@ class ParseClient: NSObject{
             
             //we need to check if the GET method is returining one student or many students
             if methodtype.query!.contains("where"){
-                self.myStudent = student(localStudentArray[0])
+                //self.myStudent = student(localStudentArray[0])
+                //TODO Write the correct alert view controller
+                if localStudentArray.count > 0 {
+                    let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
+                    //alertController.title = ""
+                    //alertController.message = "You have already posted a Student Location"
+                    //alertController.preferredStyle = UIAlertControllerStyle.Alert
+                    performUIUpdatesOnMain {
+                        hostViewController.present(alertController, animated:true,completion: nil)
+                        
+                        alertController.addAction(UIAlertAction(title: "Canel", style: .default, handler: { (UIAlertAction) in
+                            alertController.dismiss(animated: true, completion: nil)
+                        }))
+                        
+                        alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
+                            alertController.dismiss(animated: true, completion: nil)
+                        
+                        let navigationPostController = hostViewController.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                            hostViewController.present(navigationPostController!, animated: true)
+                        }))
+   
+                    }
+                }else{
+                    performUIUpdatesOnMain {
+                        let navigationPostController = hostViewController.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                        hostViewController.present(navigationPostController!, animated: true)
+                    }
+                    
+                }
+                
             }else{
                 self.studentArray = localStudentArray.map({student($0)})
             }
-            print(self.studentArray[0].lastName)
         }
         task.resume()
     }

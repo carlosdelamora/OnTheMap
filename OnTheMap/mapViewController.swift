@@ -24,9 +24,25 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
-    // The map. See the setup in the Storyboard file. Note particularly that the view controller
-    // is set up as the map view's delegate.
+    
+    @IBAction func postStudent(_ sender: AnyObject) {
+        
+        //We need to check if a location for this user has been posted yet
+        let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil), self)
+        print("the post was pressed")
+        print(ParseClient.sharedInstance().URLParseMethod(parameters, nil))
+    }
+    
+    // The map. See the setup in the Storyboard file. Note particularly that the view controller is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
+    // The logout action
+    @IBAction func logout(_ sender: AnyObject) {
+    
+        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
+        UDClient.sharedInstance().logoutPressed = true 
+        print("logout was pressed")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -50,16 +66,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.addAnnotations(annotations)
         
     }
-    
-    // The logout action
-    
-    @IBAction func logout(_ sender: AnyObject) {
-    
-        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
-        UDClient.sharedInstance().logoutPressed = true 
-        print("logout was pressed")
-    }
-    
     // MARK: - MKMapViewDelegate
     
     // Here we create a view with a "right callout accessory view". You might choose to look into other
@@ -90,8 +96,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle! {
-                app.open(URL(string: toOpen)!, options: [String : Any](), completionHandler: nil)
+            if let toOpen = view.annotation?.subtitle!, let url = URL(string: toOpen) {
+                app.open( url, options: [String : Any](), completionHandler: nil)
             }
         }
     }

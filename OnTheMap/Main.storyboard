@@ -131,18 +131,42 @@
         <scene sceneID="Nw3-un-lIa">
             <objects>
                 <tableViewController id="HUj-XB-3K3" customClass="TableViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="iQR-eR-KjF">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="49" sectionHeaderHeight="28" sectionFooterHeight="28" id="iQR-eR-KjF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="kEm-Sh-emf">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="49" id="kEm-Sh-emf" customClass="Cell" customModule="OnTheMap" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="49"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kEm-Sh-emf" id="Cni-ZH-KX1">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="48"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="laG-Tq-Nos">
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="45" id="ByS-GQ-cEr"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sJ9-oR-7qc">
+                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="laG-Tq-Nos" firstAttribute="top" secondItem="sJ9-oR-7qc" secondAttribute="top" id="SLs-Wo-yQU"/>
+                                        <constraint firstItem="laG-Tq-Nos" firstAttribute="leading" secondItem="Cni-ZH-KX1" secondAttribute="leading" id="THP-ft-0BH"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="laG-Tq-Nos" secondAttribute="bottom" constant="-3" id="hrK-yt-jme"/>
+                                        <constraint firstAttribute="bottom" secondItem="sJ9-oR-7qc" secondAttribute="bottom" id="j9B-io-kh4"/>
+                                        <constraint firstAttribute="trailing" secondItem="sJ9-oR-7qc" secondAttribute="trailing" constant="8" id="n95-NI-9vs"/>
+                                        <constraint firstItem="sJ9-oR-7qc" firstAttribute="top" secondItem="Cni-ZH-KX1" secondAttribute="top" id="uMw-kP-7IY"/>
+                                        <constraint firstItem="sJ9-oR-7qc" firstAttribute="leading" secondItem="laG-Tq-Nos" secondAttribute="trailing" constant="25" id="zYT-Tu-zGr"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nameLabel" destination="sJ9-oR-7qc" id="IsL-pz-dgt"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -168,7 +192,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RT5-Ie-red" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2108" y="525"/>
+            <point key="canvasLocation" x="2108" y="524.8875562218891"/>
         </scene>
         <!--Map-->
         <scene sceneID="tBf-wY-sUa">
@@ -219,7 +243,7 @@
                             <barButtonItem systemItem="refresh" id="dCl-Ar-hr7"/>
                             <barButtonItem image="pin" id="1BD-dK-W6J">
                                 <connections>
-                                    <segue destination="X0H-E8-dI9" kind="show" id="ewA-O0-5Gu"/>
+                                    <action selector="postStudent:" destination="PMQ-23-nQg" id="E1h-rg-gS9"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -405,7 +429,4 @@
         <image name="pin" width="32" height="32"/>
         <image name="udacity" width="256" height="256"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="duY-OF-V1l"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -43,7 +43,13 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         mapLocationText.delegate = self
+        URLTextView.delegate = self
         resetToInitalConditions()
+        
+        //Using the GET method we got the firstname and lastname of the user set it up to student in this class
+        /*performUpdatesInTheBackground {
+        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/\(UDClient.sharedInstance().userID!)"), "GET", username: nil, password: nil, hostViewController: self)
+        }*/
     }
     
     @IBAction func findOnTheMap(_ sender: AnyObject) {
@@ -94,9 +100,7 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     }
     
     @IBAction func SubmitButton(_ sender: AnyObject) {
-       //Using the GET method we got the firstname and lastname of the user set it up to student in this class
-       //TODO: fix my user id 2412918542
-        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/2412918542"/*\(UDClient.sharedInstance().userID!)"*/), "GET", username: nil, password: nil, hostViewController: self)
+       
        studentArray["mediaURL"] = URLTextView.text as AnyObject
        let currentDate = Date()
        let dateFormatter = DateFormatter()
