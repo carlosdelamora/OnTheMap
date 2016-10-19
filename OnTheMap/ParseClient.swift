@@ -84,7 +84,7 @@ class ParseClient: NSObject{
     
     //we use this method for both GET methods, that returns an array of one student or an array of I believe 100 students
     //TODO check that we need the UIVIewController
-    func parseGetMethod(_ methodtype: URL, _ hostViewController: UIViewController ){
+    func parseGetMethod(_ methodtype: URL, _ completionHandeler: @escaping ([[String:AnyObject]]) -> Void ){
         
         let request = NSMutableURLRequest(url: methodtype)
         var jsonData: [String:AnyObject]?
@@ -105,47 +105,16 @@ class ParseClient: NSObject{
                 return
             }
             
-            //we check what if the GET method returns different students or the same student. If the methodtype contains where in the query then it returns students with the same uniqueKey
-            if methodtype.query!.contains("where"){
-                //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting. 
-                if localStudentArray.count > 0 {
-                    self.myStudent = student(localStudentArray[0])
-                    let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
-                    //alertController.title = ""
-                    //alertController.message = "You have already posted a Student Location"
-                    //alertController.preferredStyle = UIAlertControllerStyle.Alert
-                    performUIUpdatesOnMain {
-                        hostViewController.present(alertController, animated:true,completion: nil)
-                        
-                        alertController.addAction(UIAlertAction(title: "Canel", style: .default, handler: { (UIAlertAction) in
-                            alertController.dismiss(animated: true, completion: nil)
-                        }))
-                        
-                        alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
-                            alertController.dismiss(animated: true, completion: nil)
-                        
-                        let navigationPostController = hostViewController.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
-                            hostViewController.present(navigationPostController!, animated: true)
-                        }))
-                        
-   
-                    }
-                }else{
-                    performUIUpdatesOnMain {
-                        let navigationPostController = hostViewController.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
-                        hostViewController.present(navigationPostController!, animated: true)
-                    }
-                    
-                }
-                
-            }else{
-                self.studentArray = localStudentArray.map({student($0)})
+            performUIUpdatesOnMain {
+                completionHandeler(localStudentArray)
             }
+            
+           
         }
         task.resume()
     }
     
-    func parsePUTorPostMethod(_ methodtype: URL, _ type:String, _ hostViewController: UIViewController ){
+    func parsePUTorPostMethod(_ methodtype: URL, _ type:String, _ hostViewController: UIViewController, _ completionHandeler: @escaping ([String:AnyObject]) -> Void ){
         
         let request = NSMutableURLRequest(url: methodtype)
         var jsonData: [String:AnyObject]?
@@ -166,7 +135,7 @@ class ParseClient: NSObject{
             }
             
             //this is what we do for post
-            guard let objectId = jsonData?["objectId"] else{
+            /*guard let objectId = jsonData?["objectId"] else{
                 if type == "POST"{
                     displayError(string: "error with the post method")
                 }
@@ -192,21 +161,21 @@ class ParseClient: NSObject{
                     hostViewController.present(Controller!, animated: true, completion: nil)
                     }
                 
-            }
+            }*/
             
             
             
             //we finish POST 
             
             //this is what we do for PUT
-            guard let updatedAt = jsonData?["updatedAt"]! else{
+            /*guard let updatedAt = jsonData?["updatedAt"]! else{
                 if type == "PUT"{
                     
                     displayError(string: "error with the put method")
                 }
                 return
             }
-            
+            print("we are almost done")
             if type == "PUT"{
                 self.dictionaryOfMyStudent["updatedAt"] = updatedAt
                 self.myStudent = student(self.dictionaryOfMyStudent)
@@ -220,8 +189,8 @@ class ParseClient: NSObject{
 
             }else{
                 print("type is not PUT is \(type)")
-            }
-            
+            }*/
+            completionHandeler(jsonData!)
             
         }
         task.resume()

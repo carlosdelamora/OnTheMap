@@ -19,17 +19,52 @@ class TableViewController: UITableViewController{
     @IBAction func refresh(_ sender: AnyObject) {
         let parametersFor100 = ["limit":100 as AnyObject]
         //create a closure with self.tavleViewReloadData
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil), self)
-        performUIUpdatesOnMain {
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
+            ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
             self.tableView.reloadData()
         }
+
+        
         
         
     }
     
     @IBAction func postButton(_ sender: AnyObject) {
+        //set the parameters to search students with unique key the same as the user
         let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil), self)
+        // call this method to return an array of type [String: AnyObject] where the uniqueKey is the same as the userId
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray in
+            //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
+            if localStudentArray.count > 0 {
+                ParseClient.sharedInstance().myStudent = student(localStudentArray[0])
+                let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
+                
+                performUIUpdatesOnMain {
+                    self.present(alertController, animated:true,completion: nil)
+                    
+                    alertController.addAction(UIAlertAction(title: "Canel", style: .default, handler: { (UIAlertAction) in
+                        alertController.dismiss(animated: true, completion: nil)
+                    }))
+                    
+                    alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
+                        alertController.dismiss(animated: true, completion: nil)
+                        
+                        let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                        self.present(navigationPostController!, animated: true)
+                    }))
+                    
+                    
+                }
+            }else{
+                performUIUpdatesOnMain {
+                    let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                    self.present(navigationPostController!, animated: true)
+                }
+                
+            }
+            
+        }
+
         print("the post was pressed")
         print(ParseClient.sharedInstance().URLParseMethod(parameters, nil))
     }

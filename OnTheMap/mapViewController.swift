@@ -35,9 +35,30 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //remove all the annotations
+        mapView.removeAnnotations(mapView.annotations)
+        let parametersFor100 = ["limit":100 as AnyObject]
+        //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
+        //create a closure to populate the map
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
+            ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
+            var annotations = [MKPointAnnotation]()
+            //check if we have a myStudent
+            /*if ParseClient.sharedInstance().myStudent != nil{
+             //annotations.append((ParseClient.sharedInstance().myStudent?.annotation)!)
+             ParseClient.sharedInstance().studentArray.append(ParseClient.sharedInstance().myStudent!)
+             }*/
+            //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
+            for students in ParseClient.sharedInstance().studentArray{
+                annotations.append(students.annotation)
+            }
+            
+            // When the array is complete, we add the annotations to the map.
+            self.mapView.addAnnotations(annotations)
+        }
+
         
-        
-        //We create annotations to go on the map
+        /*//We create annotations to go on the map
         var annotations = [MKPointAnnotation]()
         //check if we have a myStudent
         if ParseClient.sharedInstance().myStudent != nil{
@@ -50,7 +71,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
         
         // When the array is complete, we add the annotations to the map.
-        self.mapView.addAnnotations(annotations)
+        self.mapView.addAnnotations(annotations)*/
         
     }
 
@@ -72,29 +93,63 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let parametersFor100 = ["limit":100 as AnyObject]
         //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
         //create a closure to populate the map
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil), self)
-        //We create annotations to go on the map
-        var annotations = [MKPointAnnotation]()
-        //check if we have a myStudent
-        if ParseClient.sharedInstance().myStudent != nil{
-            //annotations.append((ParseClient.sharedInstance().myStudent?.annotation)!)
-            ParseClient.sharedInstance().studentArray.append(ParseClient.sharedInstance().myStudent!)
-        }
-        //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
-        for students in ParseClient.sharedInstance().studentArray{
-            annotations.append(students.annotation)
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
+            ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
+            var annotations = [MKPointAnnotation]()
+            //check if we have a myStudent
+            /*if ParseClient.sharedInstance().myStudent != nil{
+             //annotations.append((ParseClient.sharedInstance().myStudent?.annotation)!)
+             ParseClient.sharedInstance().studentArray.append(ParseClient.sharedInstance().myStudent!)
+             }*/
+            //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
+            for students in ParseClient.sharedInstance().studentArray{
+                annotations.append(students.annotation)
+            }
+            
+            // When the array is complete, we add the annotations to the map.
+            self.mapView.addAnnotations(annotations)
         }
         
-        // When the array is complete, we add the annotations to the map.
-        self.mapView.addAnnotations(annotations)
 
     }
     
     @IBAction func postStudent(_ sender: AnyObject) {
         
-        //We need to check if a location for this user has been posted yet
+        //set the parameters to search students with unique key the same as the user
         let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil), self)
+        // call this method to return an array of type [String: AnyObject] where the uniqueKey is the same as the userId
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray in
+            //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
+            if localStudentArray.count > 0 {
+                //we set up MyStudent to be the first student in this aray if exists 
+                ParseClient.sharedInstance().myStudent = student(localStudentArray[0])
+                let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
+                
+                performUIUpdatesOnMain {
+                    self.present(alertController, animated:true,completion: nil)
+                    
+                    alertController.addAction(UIAlertAction(title: "Canel", style: .default, handler: { (UIAlertAction) in
+                        alertController.dismiss(animated: true, completion: nil)
+                    }))
+                    
+                    alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
+                        alertController.dismiss(animated: true, completion: nil)
+                        
+                        let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                        self.present(navigationPostController!, animated: true)
+                    }))
+                    
+                    
+                }
+            }else{
+                performUIUpdatesOnMain {
+                    let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                    self.present(navigationPostController!, animated: true)
+                }
+                
+            }
+        
+        }
         print("the post was pressed")
         print(ParseClient.sharedInstance().URLParseMethod(parameters, nil))
     }

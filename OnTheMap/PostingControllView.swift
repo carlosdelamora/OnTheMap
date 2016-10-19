@@ -105,10 +105,67 @@ class PostingControllView:UIViewController, UITextViewDelegate{
        
        ParseClient.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
        ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
-        // we should do this method when we have a new student
-        //ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, nil), "POST", self)
-        // we should do this method when we have an existing student
-           ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + (ParseClient.sharedInstance().myStudent?.objectId)!), "PUT", self)
+        // we should do this method "POST" when we have no student i.e. when myStudent is nil
+        
+        if ParseClient.sharedInstance().myStudent == nil{
+            ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, nil), "POST", self){ jsonData in
+               
+                guard let objectId = jsonData["objectId"] else{
+                   
+                        print( "error with the post method")
+                
+                    return
+                }
+        
+                ParseClient.sharedInstance().dictionaryOfMyStudent["objectId"] = objectId
+                guard let createdAt = jsonData["createdAt"] else{
+                    print("we could not find createdAt")
+                    return
+                }
+                //since the student was created the update time and the create time is the same
+                ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = createdAt
+                ParseClient.sharedInstance().dictionaryOfMyStudent["updatedAt"] = createdAt
+                ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
+                print("student was posted")
+                performUIUpdatesOnMain {
+                    //return back to mapViewController once the myStudents has been created
+                    let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+                    self.present(Controller!, animated: true, completion: nil)
+                }
+                    
+                
+                
+            }
+        }
+        
+        
+       
+        // we should do this method "PUT" when we have an existing student
+        if ParseClient.sharedInstance().myStudent != nil{
+            //createdAt does not change
+            ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = ParseClient.sharedInstance().myStudent!.createdAt as AnyObject
+            //objectId should not change 
+            ParseClient.sharedInstance().dictionaryOfMyStudent["objectId"] = ParseClient.sharedInstance().myStudent!.objectId as AnyObject
+            ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + (ParseClient.sharedInstance().myStudent?.objectId)!), "PUT", self){ jsonData in
+            
+                guard let updatedAt = jsonData["updatedAt"] else{
+                    print( "error with the put method")
+                    return
+                }
+                print("we are almost done")
+                ParseClient.sharedInstance().dictionaryOfMyStudent["updatedAt"] = updatedAt
+                ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
+                print("student was updated")
+                
+                    performUIUpdatesOnMain {
+                        //return back to mapViewController once the myStudents has been created
+                        let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+                        self.present(Controller!, animated: true, completion: nil)
+                    }
+                }
+    
+        }
+        
     }
 
     @IBAction func theUserTaped(_ sender: AnyObject) {

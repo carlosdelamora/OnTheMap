@@ -23,7 +23,10 @@ class LoginViewController: UIViewController{
         //we do not want to send a request when the logout button is pressed only when the app loads for the first time
         if !UDClient.sharedInstance().logoutPressed{
             let parametersFor100 = ["limit":100 as AnyObject]
-            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil), self)
+            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
+                ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
+            }
+
             UDClient.sharedInstance().logoutPressed = false
         }
     }
