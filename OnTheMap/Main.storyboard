@@ -140,7 +140,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="49"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kEm-Sh-emf" id="Cni-ZH-KX1">
-                                    <frame key="frameInset" width="375" height="48"/>
+                                    <frame key="frameInset" width="375" height="48.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="laG-Tq-Nos">
@@ -181,10 +181,14 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="prX-mb-Rbb"/>
+                            <barButtonItem systemItem="refresh" id="prX-mb-Rbb">
+                                <connections>
+                                    <action selector="refresh:" destination="HUj-XB-3K3" id="QL0-na-pmX"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="pin" id="zay-rJ-sqD">
                                 <connections>
-                                    <segue destination="X0H-E8-dI9" kind="show" id="duY-OF-V1l"/>
+                                    <action selector="postButton:" destination="HUj-XB-3K3" id="O8s-r4-65c"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -240,7 +244,11 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="dCl-Ar-hr7"/>
+                            <barButtonItem systemItem="refresh" id="dCl-Ar-hr7">
+                                <connections>
+                                    <action selector="refresh:" destination="PMQ-23-nQg" id="8n1-0p-v98"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="pin" id="1BD-dK-W6J">
                                 <connections>
                                     <action selector="postStudent:" destination="PMQ-23-nQg" id="E1h-rg-gS9"/>

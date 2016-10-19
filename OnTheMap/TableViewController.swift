@@ -11,7 +11,28 @@ import UIKit
 
 class TableViewController: UITableViewController{
     
+    override func viewDidLoad() {
+         super.viewDidLoad()
+        //self.tableView.delegate = self
+    }
     
+    @IBAction func refresh(_ sender: AnyObject) {
+        let parametersFor100 = ["limit":100 as AnyObject]
+        //create a closure with self.tavleViewReloadData
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil), self)
+        performUIUpdatesOnMain {
+            self.tableView.reloadData()
+        }
+        
+        
+    }
+    
+    @IBAction func postButton(_ sender: AnyObject) {
+        let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil), self)
+        print("the post was pressed")
+        print(ParseClient.sharedInstance().URLParseMethod(parameters, nil))
+    }
     
     @IBAction func logoutButton(_ sender: AnyObject) {
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
@@ -29,7 +50,7 @@ class TableViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")! as! Cell
         let aStudent = ParseClient.sharedInstance().studentArray[indexPath.row]
-        cell.nameLabel.text = aStudent.firstName + " " + aStudent.lastName
+        cell.nameLabel.text = aStudent.firstName + " " + aStudent.lastName + aStudent.mapString
         return cell 
     }
     

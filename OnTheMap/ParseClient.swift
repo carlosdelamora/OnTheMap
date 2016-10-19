@@ -105,10 +105,9 @@ class ParseClient: NSObject{
                 return
             }
             
-            //we need to check if the GET method is returining one student or many students
+            //we check what if the GET method returns different students or the same student. If the methodtype contains where in the query then it returns students with the same uniqueKey
             if methodtype.query!.contains("where"){
-                //self.myStudent = student(localStudentArray[0])
-                //TODO Write the correct alert view controller
+                //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting. 
                 if localStudentArray.count > 0 {
                     self.myStudent = student(localStudentArray[0])
                     let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
@@ -156,7 +155,7 @@ class ParseClient: NSObject{
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         print(dictionaryOfMyStudent)
-        request.httpBody = "{\"uniqueKey\": \"\( dictionaryOfMyStudent["uniqueKey"]!)\", \"firstName\": \"\(dictionaryOfMyStudent["firstName"]!)\", \"lastName\": \"\(dictionaryOfMyStudent["lastName"]!)\",\"mapString\": \"\(dictionaryOfMyStudent["mapString"])\", \"mediaURL\": \"\(dictionaryOfMyStudent["mediaURL"]!)\",\"latitude\":\(dictionaryOfMyStudent["latitude"]!), \"longitude\": \(dictionaryOfMyStudent["longitude"]!)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+        request.httpBody = "{\"uniqueKey\": \"\( dictionaryOfMyStudent["uniqueKey"]!)\", \"firstName\": \"\(dictionaryOfMyStudent["firstName"]!)\", \"lastName\": \"\(dictionaryOfMyStudent["lastName"]!)\",\"mapString\": \"\(dictionaryOfMyStudent["mapString"]!)\", \"mediaURL\": \"\(dictionaryOfMyStudent["mediaURL"]!)\",\"latitude\":\(dictionaryOfMyStudent["latitude"]!), \"longitude\": \(dictionaryOfMyStudent["longitude"]!)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         let session = URLSession.shared
         print("this is the unique key \(dictionaryOfMyStudent["uniqueKey"]!)")
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
@@ -180,20 +179,49 @@ class ParseClient: NSObject{
                 print("we could not find createdAt")
                 return
             }
-            
+            //since the student was created the update time and the create time is the same
             self.dictionaryOfMyStudent["createdAt"] = createdAt
             self.dictionaryOfMyStudent["updatedAt"] = createdAt
             if type == "POST"{
                 self.myStudent = student(self.dictionaryOfMyStudent)
                 print("student was posted")
+                
+                performUIUpdatesOnMain {
+                    //return back to mapViewController once the myStudents has been created
+                    let Controller = hostViewController.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+                    hostViewController.present(Controller!, animated: true, completion: nil)
+                    }
+                
             }
             
-            guard (jsonData?["updatedAt"] != nil) else{
+            
+            
+            //we finish POST 
+            
+            //this is what we do for PUT
+            guard let updatedAt = jsonData?["updatedAt"]! else{
                 if type == "PUT"{
+                    
                     displayError(string: "error with the put method")
                 }
                 return
             }
+            
+            if type == "PUT"{
+                self.dictionaryOfMyStudent["updatedAt"] = updatedAt
+                self.myStudent = student(self.dictionaryOfMyStudent)
+                print("student was updated")
+                
+                performUIUpdatesOnMain {
+                    //return back to mapViewController once the myStudents has been created
+                    let Controller = hostViewController.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+                    hostViewController.present(Controller!, animated: true, completion: nil)
+                }
+
+            }else{
+                print("type is not PUT is \(type)")
+            }
+            
             
         }
         task.resume()

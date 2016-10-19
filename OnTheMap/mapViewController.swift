@@ -25,25 +25,6 @@ import MapKit
 class MapViewController: UIViewController, MKMapViewDelegate {
     
     
-    @IBAction func postStudent(_ sender: AnyObject) {
-        
-        //We need to check if a location for this user has been posted yet
-        let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil), self)
-        print("the post was pressed")
-        print(ParseClient.sharedInstance().URLParseMethod(parameters, nil))
-    }
-    
-    // The map. See the setup in the Storyboard file. Note particularly that the view controller is set up as the map view's delegate.
-    @IBOutlet weak var mapView: MKMapView!
-    // The logout action
-    @IBAction func logout(_ sender: AnyObject) {
-    
-        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
-        UDClient.sharedInstance().logoutPressed = true 
-        print("logout was pressed")
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         let navigationController = self.navigationController
@@ -72,6 +53,52 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.addAnnotations(annotations)
         
     }
+
+    
+    
+        // The map. See the setup in the Storyboard file. Note particularly that the view controller is set up as the map view's delegate.
+    @IBOutlet weak var mapView: MKMapView!
+    // The logout action
+    @IBAction func logout(_ sender: AnyObject) {
+    
+        UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
+        UDClient.sharedInstance().logoutPressed = true 
+        print("logout was pressed")
+    }
+    
+    @IBAction func refresh(_ sender: AnyObject) {
+        //remove all the annotations
+        mapView.removeAnnotations(mapView.annotations)
+        let parametersFor100 = ["limit":100 as AnyObject]
+        //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
+        //create a closure to populate the map
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil), self)
+        //We create annotations to go on the map
+        var annotations = [MKPointAnnotation]()
+        //check if we have a myStudent
+        if ParseClient.sharedInstance().myStudent != nil{
+            //annotations.append((ParseClient.sharedInstance().myStudent?.annotation)!)
+            ParseClient.sharedInstance().studentArray.append(ParseClient.sharedInstance().myStudent!)
+        }
+        //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
+        for students in ParseClient.sharedInstance().studentArray{
+            annotations.append(students.annotation)
+        }
+        
+        // When the array is complete, we add the annotations to the map.
+        self.mapView.addAnnotations(annotations)
+
+    }
+    
+    @IBAction func postStudent(_ sender: AnyObject) {
+        
+        //We need to check if a location for this user has been posted yet
+        let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil), self)
+        print("the post was pressed")
+        print(ParseClient.sharedInstance().URLParseMethod(parameters, nil))
+    }
+    
     // MARK: - MKMapViewDelegate
     
     // Here we create a view with a "right callout accessory view". You might choose to look into other

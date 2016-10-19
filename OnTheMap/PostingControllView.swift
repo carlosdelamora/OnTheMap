@@ -104,29 +104,11 @@ class PostingControllView:UIViewController, UITextViewDelegate{
     @IBAction func SubmitButton(_ sender: AnyObject) {
        
        ParseClient.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
-       /*let currentDate = Date()
-       let dateFormatter = DateFormatter()
-       dateFormatter.dateFormat = "YYY-MM-dd'T'HH:mm:SS.SSSS"
-       let updatedAt = dateFormatter.string(from: currentDate)
-       ParseClient.sharedInstance().dictionaryOfMyStudent["updatedAt"] = updatedAt as AnyObject
-       //If has been created before we keep the createdAt
-       if ParseClient.sharedInstance().myStudent != nil{
-           ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = ParseClient.sharedInstance().myStudent?.createdAt as AnyObject
-       }else{
-           //if this is the first time we create this object we get that updatedAt is the same as createdAt
-           ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = updatedAt as AnyObject
-       }*/
        ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
-       //ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
-       //self.myStudent = ParseClient.sharedInstance().myStudent
-       //We post myStudent
-        ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, nil), "POST", self)
-        
-        /*//performUIUpdatesOnMain {
-       //return back to mapViewController once the myStudents has been created 
-            let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-            self.present(Controller!, animated: true, completion: nil)
-       // }*/
+        // we should do this method when we have a new student
+        //ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, nil), "POST", self)
+        // we should do this method when we have an existing student
+           ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + (ParseClient.sharedInstance().myStudent?.objectId)!), "PUT", self)
     }
 
     @IBAction func theUserTaped(_ sender: AnyObject) {
