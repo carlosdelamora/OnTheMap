@@ -11,6 +11,7 @@ import UIKit
 
 class LoginViewController: UIViewController{
     
+    var keyboardOnScreen = false
     
     @IBOutlet weak var udacityLogo: UIImageView!
     @IBOutlet weak var loginLabel: UILabel!
@@ -19,27 +20,31 @@ class LoginViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //configure set the delegates of the text fields to self
         configureTextField()
-        //we do not want to send a request when the logout button is pressed only when the app loads for the first time
-        if !UDClient.sharedInstance().logoutPressed{
-            let parametersFor100 = ["limit":100 as AnyObject]
-            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
-                ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
-            }
-
-            UDClient.sharedInstance().logoutPressed = false
-        }
+        
+        //subscibe to notifications in order to move the view up or down
+        subscribeToNotification(NSNotification.Name.UIKeyboardWillShow.rawValue, selector: #selector(keyboardWillShow))
+        subscribeToNotification(NSNotification.Name.UIKeyboardWillHide.rawValue, selector: #selector(keyboardWillHide))
+        subscribeToNotification(NSNotification.Name.UIKeyboardDidShow.rawValue, selector: #selector(keyboardDidShow))
+        subscribeToNotification(NSNotification.Name.UIKeyboardDidHide.rawValue, selector: #selector(keyboardDidHide))
+        
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // we need to unsubscribe from all notifications when the view disappears
+        unsubscribeFromAllNotifications()
+    }
+
     
     
     @IBAction func loginWasPressed(_ sender: AnyObject) {
         
     
-        //userDidTapView(self)
-        
+        //
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            //debugTextLabel.text = "Username or Password Empty."
-            print("Username or Password Empty.")
+            //if the login is Empty and login is pressed do nothing
         } else {
             print("login was pressed")
             UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
@@ -53,18 +58,50 @@ class LoginViewController: UIViewController{
 
 extension LoginViewController: UITextFieldDelegate {
     
-    // MARK: UITextFieldDelegate
-    
+
+    //The function lets the keyboard hide when return is pressed
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    // the function returns the height of the keyboard and deterimens the displacement need it by the view to not cover the text fields 
     fileprivate func keyboardHeight(_ notification: Notification) -> CGFloat {
         let userInfo = (notification as NSNotification).userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
         return keyboardSize.cgRectValue.height
     }
+    
+    func keyboardWillShow(_ notification: Notification) {
+        if !keyboardOnScreen {
+            view.frame.origin.y -= keyboardHeight(notification)
+        }
+        
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        if keyboardOnScreen {
+            view.frame.origin.y += keyboardHeight(notification)
+            
+        }
+    }
+    
+    func keyboardDidShow(_ notification: Notification) {
+        keyboardOnScreen = true
+    }
+    
+    func keyboardDidHide(_ notification: Notification) {
+        keyboardOnScreen = false
+    }
+    
+    fileprivate func subscribeToNotification(_ notification: String, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: NSNotification.Name(rawValue: notification), object: nil)
+    }
+    
+    fileprivate func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     fileprivate func resignIfFirstResponder(_ textField: UITextField) {
         if textField.isFirstResponder {
@@ -85,5 +122,9 @@ extension LoginViewController {
     func configureTextField(){
          emailTextField.delegate = self
          passwordTextField.delegate = self
+    }
+    
+    override var shouldAutorotate: Bool{
+        return false
     }
 }

@@ -10,17 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 
-/**
- * This view controller demonstrates the objects involved in displaying pins on a map.
- *
- * The map is a MKMapView.
- * The pins are represented by MKPointAnnotation instances.
- *
- * The view controller conforms to the MKMapViewDelegate so that it can receive a method
- * invocation when a pin annotation is tapped. It accomplishes this using two delegate
- * methods: one to put a small "info" button on the right side of each pin, and one to
- * respond when the "info" button is tapped.
- */
+
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
@@ -43,12 +33,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
             ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
             var annotations = [MKPointAnnotation]()
-            //check if we have a myStudent
-            /*if ParseClient.sharedInstance().myStudent != nil{
-             //annotations.append((ParseClient.sharedInstance().myStudent?.annotation)!)
-             ParseClient.sharedInstance().studentArray.append(ParseClient.sharedInstance().myStudent!)
-             }*/
-            //The annotations come from the annotation assigned to each student in the ParseClient student array shared instance
+            
+            
             for students in ParseClient.sharedInstance().studentArray{
                 annotations.append(students.annotation)
             }
