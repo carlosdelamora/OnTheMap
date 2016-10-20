@@ -8,18 +8,7 @@
 
 import Foundation
 import MapKit
-/*
- "createdAt" : "2015-02-24T22:27:14.456Z" as AnyObject,
- "firstName" : "Jessica" as AnyObject,
- "lastName" : "Uelmen" as AnyObject,
- "latitude" : 28.1461248 as AnyObject,
- "longitude" : -82.75676799999999 as AnyObject,
- "mapString" : "Tarpon Springs, FL" as AnyObject,
- "mediaURL" : "www.linkedin.com/in/jessicauelmen/en" as AnyObject,
- "objectId" : "kj18GEaWD8" as AnyObject,
- "uniqueKey" : 872458750 as AnyObject,
- "updatedAt" : "2015-03-09T22:07:09.593Z" as AnyObject
-*/
+
 
 struct student{
     let createdAt: String

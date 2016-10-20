@@ -21,8 +21,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     
     var numberOfEditsLocationText = 0
     var numberOfEditsURLText = 0
-    //var myStudent:student?
-    //var studentArray = [String: AnyObject]()
+    
     
     @IBOutlet weak var initialView: UIView!
     @IBOutlet weak var mapLocationText: UITextView!
@@ -77,10 +76,8 @@ class PostingControllView: UIViewController, UITextViewDelegate{
             placemark = response.mapItems[0].placemark
             ParseClient.sharedInstance().dictionaryOfMyStudent["latitude"] = placemark!.coordinate.latitude as AnyObject
             ParseClient.sharedInstance().dictionaryOfMyStudent["longitude"] = placemark!.coordinate.longitude as AnyObject
-            print("this is the response =\(response)")
-            print("this is the placemark \(placemark)")
-            //self.matchingItems = response.mapItems
-        
+            
+           
         
             let annotation = MKPointAnnotation()
             annotation.coordinate = placemark!.coordinate
@@ -165,7 +162,8 @@ class PostingControllView: UIViewController, UITextViewDelegate{
 
     @IBAction func theUserTaped(_ sender: AnyObject) {
         mapLocationText.resignFirstResponder()
-        print("the user taped")
+        URLTextView.resignFirstResponder()
+        
     }
     
     func resetToInitalConditions(){

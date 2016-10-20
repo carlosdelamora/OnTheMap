@@ -23,10 +23,6 @@ class TableViewController: UITableViewController{
             ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
             self.tableView.reloadData()
         }
-
-        
-        
-        
     }
     
     @IBAction func postButton(_ sender: AnyObject) {

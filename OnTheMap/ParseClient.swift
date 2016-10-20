@@ -50,7 +50,7 @@ class ParseClient: NSObject{
     }
 
     
-    //let closures = UDClient.sharedInstance().closures
+  
     
     
     func closures(_ data: Data?, _ response:URLResponse?, _ error:Error?)->[String: AnyObject]?{
@@ -133,63 +133,6 @@ class ParseClient: NSObject{
             func displayError(string:String){
                 print(string)
             }
-            
-            //this is what we do for post
-            /*guard let objectId = jsonData?["objectId"] else{
-                if type == "POST"{
-                    displayError(string: "error with the post method")
-                }
-                return
-            }
-            
-            self.dictionaryOfMyStudent["objectId"] = objectId
-            
-            guard let createdAt = jsonData?["createdAt"] else{
-                print("we could not find createdAt")
-                return
-            }
-            //since the student was created the update time and the create time is the same
-            self.dictionaryOfMyStudent["createdAt"] = createdAt
-            self.dictionaryOfMyStudent["updatedAt"] = createdAt
-            if type == "POST"{
-                self.myStudent = student(self.dictionaryOfMyStudent)
-                print("student was posted")
-                
-                performUIUpdatesOnMain {
-                    //return back to mapViewController once the myStudents has been created
-                    let Controller = hostViewController.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-                    hostViewController.present(Controller!, animated: true, completion: nil)
-                    }
-                
-            }*/
-            
-            
-            
-            //we finish POST 
-            
-            //this is what we do for PUT
-            /*guard let updatedAt = jsonData?["updatedAt"]! else{
-                if type == "PUT"{
-                    
-                    displayError(string: "error with the put method")
-                }
-                return
-            }
-            print("we are almost done")
-            if type == "PUT"{
-                self.dictionaryOfMyStudent["updatedAt"] = updatedAt
-                self.myStudent = student(self.dictionaryOfMyStudent)
-                print("student was updated")
-                
-                performUIUpdatesOnMain {
-                    //return back to mapViewController once the myStudents has been created
-                    let Controller = hostViewController.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-                    hostViewController.present(Controller!, animated: true, completion: nil)
-                }
-
-            }else{
-                print("type is not PUT is \(type)")
-            }*/
             completionHandeler(jsonData!)
             
         }
