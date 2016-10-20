@@ -31,6 +31,7 @@ class LoginViewController: UIViewController{
         }
     }
     
+    
     @IBAction func loginWasPressed(_ sender: AnyObject) {
         
     
@@ -45,6 +46,9 @@ class LoginViewController: UIViewController{
             
         }
     }
+    
+    
+    
 }
 
 extension LoginViewController: UITextFieldDelegate {
@@ -72,7 +76,7 @@ extension LoginViewController: UITextFieldDelegate {
     resignIfFirstResponder(emailTextField)
     resignIfFirstResponder(passwordTextField)
     }
-    
+   
 }
 
 
