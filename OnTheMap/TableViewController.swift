@@ -80,8 +80,13 @@ class TableViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")! as! Cell
-        let aStudent = ParseClient.sharedInstance().studentArray[indexPath.row]
-        cell.nameLabel.text = aStudent.firstName + " " + aStudent.lastName + aStudent.mapString
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        //we sort the student array by the date where it was updated
+        let sortedArray = ParseClient.sharedInstance().studentArray.sorted( by: { dateFormatter.date(from: $0.updateAt)! > dateFormatter.date(from: $1.updateAt)! } )
+            
+        let aStudent = sortedArray[indexPath.row]
+        cell.nameLabel.text = aStudent.firstName + " " + aStudent.lastName
         return cell 
     }
     
