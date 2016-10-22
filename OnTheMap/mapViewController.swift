@@ -72,7 +72,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
             if localStudentArray.count > 0 {
                 //we set up MyStudent to be the first student in this aray if exists 
-                ParseClient.sharedInstance().myStudent = student(localStudentArray[0])
+                StudentModel.sharedInstance().myStudent = student(localStudentArray[0])
                 let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
                 
                 performUIUpdatesOnMain {
@@ -141,10 +141,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func closureToPopulateTheMap(_ dictionary:[[String:AnyObject]]){
-        ParseClient.sharedInstance().studentArray = dictionary.map({student($0)})
+        StudentModel.sharedInstance().studentArray = dictionary.map({student($0)})
         var annotations = [MKPointAnnotation]()
         
-        for students in ParseClient.sharedInstance().studentArray{
+        for students in StudentModel.sharedInstance().studentArray{
             annotations.append(students.annotation)
         }
         

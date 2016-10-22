@@ -20,7 +20,7 @@ class TableViewController: UITableViewController{
         let parametersFor100 = ["limit":100 as AnyObject]
         //create a closure with self.tavleViewReloadData
         ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
-            ParseClient.sharedInstance().studentArray = localStudentArray.map({student($0)})
+            StudentModel.sharedInstance().studentArray = localStudentArray.map({student($0)})
             self.tableView.reloadData()
         }
     }
@@ -32,7 +32,7 @@ class TableViewController: UITableViewController{
         ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray in
             //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
             if localStudentArray.count > 0 {
-                ParseClient.sharedInstance().myStudent = student(localStudentArray[0])
+                StudentModel.sharedInstance().myStudent = student(localStudentArray[0])
                 let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
                 
                 performUIUpdatesOnMain {
@@ -74,7 +74,7 @@ class TableViewController: UITableViewController{
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ParseClient.sharedInstance().studentArray.count
+        return StudentModel.sharedInstance().studentArray.count
     }
     
     
@@ -83,7 +83,7 @@ class TableViewController: UITableViewController{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         //we sort the student array by the date where it was updated
-        let sortedArray = ParseClient.sharedInstance().studentArray.sorted( by: { dateFormatter.date(from: $0.updateAt)! > dateFormatter.date(from: $1.updateAt)! } )
+        let sortedArray = StudentModel.sharedInstance().studentArray.sorted( by: { dateFormatter.date(from: $0.updateAt)! > dateFormatter.date(from: $1.updateAt)! } )
             
         let aStudent = sortedArray[indexPath.row]
         cell.nameLabel.text = aStudent.firstName + " " + aStudent.lastName
@@ -92,7 +92,7 @@ class TableViewController: UITableViewController{
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let aStudent = ParseClient.sharedInstance().studentArray[indexPath.row]
+        let aStudent = StudentModel.sharedInstance().studentArray[indexPath.row]
         let app = UIApplication.shared
         if let url = URL(string: aStudent.mediaURL) {
             app.open( url, options: [String : Any](), completionHandler: nil)

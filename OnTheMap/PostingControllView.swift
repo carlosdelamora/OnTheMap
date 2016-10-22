@@ -48,7 +48,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     
     @IBAction func findOnTheMap(_ sender: AnyObject) {
         initialView.isHidden = true
-        ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
+        StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
         let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = mapLocationText.text
         request.region = mapView.region
@@ -74,8 +74,8 @@ class PostingControllView: UIViewController, UITextViewDelegate{
             }
             
             placemark = response.mapItems[0].placemark
-            ParseClient.sharedInstance().dictionaryOfMyStudent["latitude"] = placemark!.coordinate.latitude as AnyObject
-            ParseClient.sharedInstance().dictionaryOfMyStudent["longitude"] = placemark!.coordinate.longitude as AnyObject
+            StudentModel.sharedInstance().dictionaryOfMyStudent["latitude"] = placemark!.coordinate.latitude as AnyObject
+            StudentModel.sharedInstance().dictionaryOfMyStudent["longitude"] = placemark!.coordinate.longitude as AnyObject
             
            
         
@@ -95,11 +95,11 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     
     @IBAction func SubmitButton(_ sender: AnyObject) {
        
-       ParseClient.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
-       ParseClient.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
+       StudentModel.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
+       StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
         // we should do this method "POST" when we have no student i.e. when myStudent is nil
         
-        if ParseClient.sharedInstance().myStudent == nil{
+        if StudentModel.sharedInstance().myStudent == nil{
             ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, nil), "POST", self){ jsonData in
                
                 guard let objectId = jsonData["objectId"] else{
@@ -109,15 +109,15 @@ class PostingControllView: UIViewController, UITextViewDelegate{
                     return
                 }
         
-                ParseClient.sharedInstance().dictionaryOfMyStudent["objectId"] = objectId
+                StudentModel.sharedInstance().dictionaryOfMyStudent["objectId"] = objectId
                 guard let createdAt = jsonData["createdAt"] else{
                     print("we could not find createdAt")
                     return
                 }
                 //since the student was created the update time and the create time is the same
-                ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = createdAt
-                ParseClient.sharedInstance().dictionaryOfMyStudent["updatedAt"] = createdAt
-                ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
+                StudentModel.sharedInstance().dictionaryOfMyStudent["createdAt"] = createdAt
+                StudentModel.sharedInstance().dictionaryOfMyStudent["updatedAt"] = createdAt
+                StudentModel.sharedInstance().myStudent = student(StudentModel.sharedInstance().dictionaryOfMyStudent)
                 print("student was posted")
                 performUIUpdatesOnMain {
                     //return back to mapViewController once the myStudents has been created
@@ -133,20 +133,20 @@ class PostingControllView: UIViewController, UITextViewDelegate{
         
        
         // we should do this method "PUT" when we have an existing student
-        if ParseClient.sharedInstance().myStudent != nil{
+        if StudentModel.sharedInstance().myStudent != nil{
             //createdAt does not change
-            ParseClient.sharedInstance().dictionaryOfMyStudent["createdAt"] = ParseClient.sharedInstance().myStudent!.createdAt as AnyObject
+            StudentModel.sharedInstance().dictionaryOfMyStudent["createdAt"] = StudentModel.sharedInstance().myStudent!.createdAt as AnyObject
             //objectId should not change 
-            ParseClient.sharedInstance().dictionaryOfMyStudent["objectId"] = ParseClient.sharedInstance().myStudent!.objectId as AnyObject
-            ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + (ParseClient.sharedInstance().myStudent?.objectId)!), "PUT", self){ jsonData in
+            StudentModel.sharedInstance().dictionaryOfMyStudent["objectId"] = StudentModel.sharedInstance().myStudent!.objectId as AnyObject
+            ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + (StudentModel.sharedInstance().myStudent?.objectId)!), "PUT", self){ jsonData in
             
                 guard let updatedAt = jsonData["updatedAt"] else{
                     print( "error with the put method")
                     return
                 }
                 print("we are almost done")
-                ParseClient.sharedInstance().dictionaryOfMyStudent["updatedAt"] = updatedAt
-                ParseClient.sharedInstance().myStudent = student(ParseClient.sharedInstance().dictionaryOfMyStudent)
+                StudentModel.sharedInstance().dictionaryOfMyStudent["updatedAt"] = updatedAt
+                StudentModel.sharedInstance().myStudent = student(StudentModel.sharedInstance().dictionaryOfMyStudent)
                 print("student was updated")
                 
                     performUIUpdatesOnMain {

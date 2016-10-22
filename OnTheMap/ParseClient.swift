@@ -12,10 +12,10 @@ import UIKit
 class ParseClient: NSObject{
     
     
-    var studentArray = [student]()
+    //var studentArray = [student]()
     //myStudent is the student I will create with the information of the user in my PostingViewController.
-    var myStudent: student? = nil
-    var dictionaryOfMyStudent = [String: AnyObject]()
+    //var myStudent: student? = nil
+    //var dictionaryOfMyStudent = [String: AnyObject]()
     
     override init() {
         super.init()
@@ -123,10 +123,10 @@ class ParseClient: NSObject{
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        print(dictionaryOfMyStudent)
-        request.httpBody = "{\"uniqueKey\": \"\( dictionaryOfMyStudent["uniqueKey"]!)\", \"firstName\": \"\(dictionaryOfMyStudent["firstName"]!)\", \"lastName\": \"\(dictionaryOfMyStudent["lastName"]!)\",\"mapString\": \"\(dictionaryOfMyStudent["mapString"]!)\", \"mediaURL\": \"\(dictionaryOfMyStudent["mediaURL"]!)\",\"latitude\":\(dictionaryOfMyStudent["latitude"]!), \"longitude\": \(dictionaryOfMyStudent["longitude"]!)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+        print(StudentModel.sharedInstance().dictionaryOfMyStudent)
+        request.httpBody = "{\"uniqueKey\": \"\(StudentModel.sharedInstance().dictionaryOfMyStudent["uniqueKey"]!)\", \"firstName\": \"\(StudentModel.sharedInstance().dictionaryOfMyStudent["firstName"]!)\", \"lastName\": \"\(StudentModel.sharedInstance().dictionaryOfMyStudent["lastName"]!)\",\"mapString\": \"\(StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"]!)\", \"mediaURL\": \"\(StudentModel.sharedInstance().dictionaryOfMyStudent["mediaURL"]!)\",\"latitude\":\(StudentModel.sharedInstance().dictionaryOfMyStudent["latitude"]!), \"longitude\": \(StudentModel.sharedInstance().dictionaryOfMyStudent["longitude"]!)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         let session = URLSession.shared
-        print("this is the unique key \(dictionaryOfMyStudent["uniqueKey"]!)")
+        print("this is the unique key \(StudentModel.sharedInstance().dictionaryOfMyStudent["uniqueKey"]!)")
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
         jsonData = self.closures(data, response, error)
             

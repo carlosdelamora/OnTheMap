@@ -126,7 +126,7 @@ class UDClient:NSObject{
                 }
                 
                 self.userID = Int(number)!
-                ParseClient.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = Int(number)! as AnyObject
+                StudentModel.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = Int(number)! as AnyObject
                 print(self.userID)
                 
             }
@@ -194,9 +194,9 @@ class UDClient:NSObject{
                 
                 //let PostingController = hostViewController as! PostingControllView
                 
-                ParseClient.sharedInstance().dictionaryOfMyStudent["firstName"] = firstName as AnyObject
-                ParseClient.sharedInstance().dictionaryOfMyStudent["lastName"] = lastName as AnyObject
-                ParseClient.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = key as AnyObject
+                StudentModel.sharedInstance().dictionaryOfMyStudent["firstName"] = firstName as AnyObject
+                StudentModel.sharedInstance().dictionaryOfMyStudent["lastName"] = lastName as AnyObject
+                StudentModel.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = key as AnyObject
                 print(lastName)
                 print(firstName)
                 print(key)

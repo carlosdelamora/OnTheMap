@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+var internetReach = Reachability()
+var internetStatus: NSInteger? // 0 not reachable, 1 is reachable viwa wifi ReachableViaWWAN
 class LoginViewController: UIViewController{
     
     var keyboardOnScreen = false
@@ -29,26 +31,50 @@ class LoginViewController: UIViewController{
         subscribeToNotification(NSNotification.Name.UIKeyboardDidShow.rawValue, selector: #selector(keyboardDidShow))
         subscribeToNotification(NSNotification.Name.UIKeyboardDidHide.rawValue, selector: #selector(keyboardDidHide))
         
+        //we check what is the internet status
+        internetStatus = internetReach.currentReachabilityStatus().rawValue
+        //we add self as an observer with a notification when the network status changed 
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: .reachabilityChanged, object: nil)
+    }
+    
+    func reachabilityStatusChanged(_ sender: NSNotification){
+        internetStatus = (sender.object as! Reachability).currentReachabilityStatus().rawValue
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // we need to unsubscribe from all notifications when the view disappears
         unsubscribeFromAllNotifications()
+        NotificationCenter.default.removeObserver(self, name: .reachabilityChanged, object: nil)
     }
 
     
     
     @IBAction func loginWasPressed(_ sender: AnyObject) {
+        print("the internet status is \(internetStatus)")
         
-    
         //
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            //if the login is Empty and login is pressed do nothing
+        //if the login is Empty and login is pressed do nothing
         } else {
-            print("login was pressed")
-            UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
-            
+            // We check if there is internet connection. 
+            if internetStatus! == 0{
+                
+                
+                let  alertController = UIAlertController()
+                alertController.title = "No internet Connection"
+                alertController.message = "You are not connected to the newrok, please connect and try again"
+                performUIUpdatesOnMain {
+                    self.present(alertController, animated:true,completion: nil)
+                    
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                        alertController.dismiss(animated: true, completion: nil)
+                    }))
+                }
+            }else{
+                UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
+            }
         }
     }
     
