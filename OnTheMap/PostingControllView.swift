@@ -22,6 +22,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     var numberOfEditsLocationText = 0
     var numberOfEditsURLText = 0
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var initialView: UIView!
     @IBOutlet weak var mapLocationText: UITextView!
@@ -29,8 +30,9 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     @IBOutlet weak var mapView: MKMapView!
     
     @IBAction func cancelButton(_ sender: AnyObject) {
-        let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-        present(Controller!, animated: true, completion: nil)
+       
+        dismiss(animated: true, completion: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,6 +49,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     }
     
     @IBAction func findOnTheMap(_ sender: AnyObject) {
+        activityIndicator.startAnimating()
         initialView.isHidden = true
         StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
         let request = MKLocalSearchRequest()
@@ -69,6 +72,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
                 }
             
             guard let response = response else {
+                self.activityIndicator.stopAnimating()
                 displayError(string:"There was no response")
                 return
             }
@@ -86,10 +90,16 @@ class PostingControllView: UIViewController, UITextViewDelegate{
                 let state = placemark?.administrativeArea {
                 annotation.subtitle = "\(city) \(state)"
             }
-            self.mapView.addAnnotation(annotation)
-            let span = MKCoordinateSpanMake(0.05, 0.05)
-            let region = MKCoordinateRegionMake(placemark!.coordinate, span)
-            self.mapView.setRegion(region, animated: true)
+            
+            performUIUpdatesOnMain {
+                self.mapView.addAnnotation(annotation)
+                let span = MKCoordinateSpanMake(0.05, 0.05)
+                let region = MKCoordinateRegionMake(placemark!.coordinate, span)
+            
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.hidesWhenStopped = true
+                self.mapView.setRegion(region, animated: true)
+            }
         }
     }
     

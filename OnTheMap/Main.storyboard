@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jW5-lH-1eN">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jW5-lH-1eN">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -140,7 +140,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="49"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kEm-Sh-emf" id="Cni-ZH-KX1">
-                                    <frame key="frameInset" width="375" height="48.5"/>
+                                    <frame key="frameInset" width="375" height="48"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="laG-Tq-Nos">
@@ -302,6 +302,12 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RSj-vX-ZKJ"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Idu-lo-Wm4">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="80O-j3-Z38"/>
+                                    <constraint firstAttribute="width" constant="40" id="KyB-9F-ssE"/>
+                                </constraints>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ca4-iw-O1U" userLabel="BootomView">
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="he7-TJ-EHD">
@@ -387,8 +393,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="RSj-vX-ZKJ" secondAttribute="trailing" id="0uU-H3-lD7"/>
+                            <constraint firstItem="Idu-lo-Wm4" firstAttribute="centerX" secondItem="eeV-3Z-b70" secondAttribute="centerX" id="22E-c0-uMP"/>
                             <constraint firstItem="uh2-Xb-KKg" firstAttribute="leading" secondItem="M4d-0Q-xdC" secondAttribute="leading" id="35o-1s-5Qg"/>
                             <constraint firstAttribute="bottom" secondItem="Ca4-iw-O1U" secondAttribute="bottom" id="8FM-99-bpl"/>
+                            <constraint firstItem="Idu-lo-Wm4" firstAttribute="centerY" secondItem="uh2-Xb-KKg" secondAttribute="centerY" id="CdG-OG-OuY"/>
                             <constraint firstItem="uh2-Xb-KKg" firstAttribute="leading" secondItem="Ca4-iw-O1U" secondAttribute="leading" id="H88-K6-MdL"/>
                             <constraint firstItem="uh2-Xb-KKg" firstAttribute="trailing" secondItem="Ca4-iw-O1U" secondAttribute="trailing" id="HKa-bl-2yD"/>
                             <constraint firstItem="eeV-3Z-b70" firstAttribute="leading" secondItem="M4d-0Q-xdC" secondAttribute="leading" id="NIw-QQ-fX6"/>
@@ -416,6 +424,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="URLTextView" destination="eeV-3Z-b70" id="5cs-es-r2K"/>
+                        <outlet property="activityIndicator" destination="Idu-lo-Wm4" id="Lbe-v6-lsE"/>
                         <outlet property="initialView" destination="uh2-Xb-KKg" id="pq3-g3-3jT"/>
                         <outlet property="mapLocationText" destination="anW-2c-UaD" id="gRk-uS-Bar"/>
                         <outlet property="mapView" destination="RSj-vX-ZKJ" id="40d-Bk-gqt"/>
