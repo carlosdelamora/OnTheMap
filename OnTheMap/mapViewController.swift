@@ -33,72 +33,105 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
                 self.closureToPopulateTheMap(localStudentArray)
         }
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
     }
 
+    func statusChanged(_ selector: Notification){
+        internetStatus = (selector.object as! Reachability).currentReachabilityStatus().rawValue
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self, name: .reachabilityChanged, object: nil)
+    }
+    
+    func connectivityAlert(_title: String, _ message:String){
+        let alertController = UIAlertController()
+        alertController.title = title
+        alertController.message = message
+        let actionAlert = UIAlertAction(title: "OK", style: .default){ (UIAlertAction) in
+            alertController.dismiss(animated: true, completion: nil)
+            
+        }
+        alertController.addAction(actionAlert)
+        
+        performUIUpdatesOnMain {
+            self.present(alertController, animated: true)
+        }
+        
+    }
     
     
         // The map. See the setup in the Storyboard file. Note particularly that the MapViewController is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     // The logout action
     @IBAction func logout(_ sender: AnyObject) {
-    
+        if internetStatus! == 0{
+            connectivityAlert(_title: "No internet connection", "We can not logout without internet connectivity, please connect to the internet and then logout")
+        }else{
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "DELETE", username: nil, password: nil, hostViewController: self)
         UDClient.sharedInstance().logoutPressed = true 
         print("logout was pressed")
+        }
     }
     
     @IBAction func refresh(_ sender: AnyObject) {
-        //remove all the annotations
-        mapView.removeAnnotations(mapView.annotations)
-        let parametersFor100 = ["limit":100 as AnyObject]
-        //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
-        //create a closure to populate the map
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
-            
-                self.closureToPopulateTheMap(localStudentArray)
-            
-        }
         
+        if internetStatus! == 0 {
+            connectivityAlert(_title:"No internet", "We can not refresh since there is no internet connection, please connect to the internet and try again")
+        }else{
+            //remove all the annotations
+            mapView.removeAnnotations(mapView.annotations)
+            let parametersFor100 = ["limit":100 as AnyObject]
+            //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
+            //create a closure to populate the map
+            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
+            
+                    self.closureToPopulateTheMap(localStudentArray)
+            
+            }
+        }
 
     }
     
     @IBAction func postStudent(_ sender: AnyObject) {
+        if internetStatus! == 0 {
+            connectivityAlert(_title:"No internet", "We can not post since there is no internet connection, please connect to the internet and try again")
+        }else{
         
-        //set the parameters to search students with unique key the same as the user
-        let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
-        // call this method to return an array of type [String: AnyObject] where the uniqueKey is the same as the userId
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray in
-            //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
-            if localStudentArray.count > 0 {
-                //we set up MyStudent to be the first student in this aray if exists 
-                StudentModel.sharedInstance().myStudent = student(localStudentArray[0])
-                let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
+            //set the parameters to search students with unique key the same as the user
+            let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
+            // call this method to return an array of type [String: AnyObject] where the uniqueKey is the same as the userId
+            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray in
+                //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
+                if localStudentArray.count > 0 {
+                    //we set up MyStudent to be the first student in this aray if exists
+                    StudentModel.sharedInstance().myStudent = student(localStudentArray[0])
+                    let  alertController = UIAlertController(title: "", message: "You have already posted a Student Location", preferredStyle: UIAlertControllerStyle.alert)
                 
-                performUIUpdatesOnMain {
-                    self.present(alertController, animated:true,completion: nil)
+                    performUIUpdatesOnMain {
+                        self.present(alertController, animated:true,completion: nil)
                     
-                    alertController.addAction(UIAlertAction(title: "Canel", style: .default, handler: { (UIAlertAction) in
-                        alertController.dismiss(animated: true, completion: nil)
-                    }))
+                        alertController.addAction(UIAlertAction(title: "Canel", style: .default, handler: { (UIAlertAction) in
+                            alertController.dismiss(animated: true, completion: nil)
+                         }))
                     
-                    alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
-                        alertController.dismiss(animated: true, completion: nil)
+                         alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
+                             alertController.dismiss(animated: true, completion: nil)
                         
+                            let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
+                            self.present(navigationPostController!, animated: true)
+                        }))
+                    
+                    
+                    }
+                }else{
+                    performUIUpdatesOnMain {
                         let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
                         self.present(navigationPostController!, animated: true)
-                    }))
-                    
-                    
-                }
-            }else{
-                performUIUpdatesOnMain {
-                    let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
-                    self.present(navigationPostController!, animated: true)
-                }
+                    }
                 
+                }
             }
-        
         }
         
         

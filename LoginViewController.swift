@@ -36,7 +36,7 @@ class LoginViewController: UIViewController{
         //we add self as an observer with a notification when the network status changed 
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: .reachabilityChanged, object: nil)
     }
-    
+    //the function gets call if the reachabilityStatusChanged 
     func reachabilityStatusChanged(_ sender: NSNotification){
         internetStatus = (sender.object as! Reachability).currentReachabilityStatus().rawValue
         

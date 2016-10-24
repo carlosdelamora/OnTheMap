@@ -46,9 +46,47 @@ class PostingControllView: UIViewController, UITextViewDelegate{
         
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/\(UDClient.sharedInstance().userID!)"), "GET", username: nil, password: nil, hostViewController: self)
         
+        //add an observer to see if the internet conection changed
+        NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self, name: .reachabilityChanged, object: nil)
+    }
+    
+    //this function gets called when there is a change in the internet connectivity
+    func statusChanged(_ selector: Notification){
+        internetStatus = (selector.object as! Reachability).currentReachabilityStatus().rawValue
+    }
+    
+    //this funtion presents an alert view controller with the given message and title for no internet connection
+    func noConnectionAlert(_ message: String){
+        let controller = UIAlertController()
+        controller.title = "No internet connection"
+        controller.message = message//"Can not find the location due to no internet connection, please connecto to the internet and try again"
+        performUIUpdatesOnMain {
+            
+            let action = UIAlertAction(title:
+            "OK", style: .default){(UIAlertAction) in
+                controller.dismiss(animated: true, completion: nil)
+            }
+            controller.addAction(action)
+            self.present(controller, animated: true, completion: nil)
+        }
+
+        
     }
     
     @IBAction func findOnTheMap(_ sender: AnyObject) {
+       // if there is no internet connection when the findOnTheMap is pressed we display an allert view controller
+        print(internetStatus)
+        if internetStatus! == 0 {
+            let message = "Can not find the location due to no internet connection, please connecto to the internet and try again"
+            noConnectionAlert(message)
+        }
+        
         activityIndicator.startAnimating()
         initialView.isHidden = true
         StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
@@ -104,7 +142,10 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     }
     
     @IBAction func SubmitButton(_ sender: AnyObject) {
-       
+        if internetStatus == 0{
+            let message = "We can not submit your request given that there is no internet connection, please connect and try again"
+            noConnectionAlert(message)
+        }
        StudentModel.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
        StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
         // we should do this method "POST" when we have no student i.e. when myStudent is nil

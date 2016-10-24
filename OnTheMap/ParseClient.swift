@@ -133,7 +133,12 @@ class ParseClient: NSObject{
             func displayError(string:String){
                 print(string)
             }
-            completionHandeler(jsonData!)
+            
+            guard let jsonData = jsonData else{
+                print("the jsonData for the method \(methodtype) of type \(type) failed")
+                return
+            }
+            completionHandeler(jsonData)
             
         }
         task.resume()
