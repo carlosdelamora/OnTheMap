@@ -48,6 +48,9 @@ class PostingControllView: UIViewController, UITextViewDelegate{
         
         //add an observer to see if the internet conection changed
         NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
+        //we check what is the internet status
+        internetStatus = internetReach.currentReachabilityStatus().rawValue
+
     }
     
     

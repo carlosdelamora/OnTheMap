@@ -84,11 +84,11 @@ class ParseClient: NSObject{
     
     //we use this method for both GET methods, that returns an array of one student or an array of I believe 100 students
     //TODO check that we need the UIVIewController
-    func parseGetMethod(_ methodtype: URL, _ completionHandeler: @escaping ([[String:AnyObject]]) -> Void ){
+    func parseGetMethod(_ methodtype: URL, _ completionHandeler: @escaping ([[String:AnyObject]],Error?) -> Void ){
         
         let request = NSMutableURLRequest(url: methodtype)
         var jsonData: [String:AnyObject]?
-        var finalStudentArray: [student]?
+        //var finalStudentArray: [student]?
         print("the methodtype is \(methodtype)")
         request.httpMethod = "GET"
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
@@ -96,19 +96,22 @@ class ParseClient: NSObject{
         let session = URLSession.shared
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
             jsonData = self.closures(data, response, error)
-            //TODO may be fix the displayError to do something?
-            func displayError(string:String){
-                print(string)
-            }
-            guard let localStudentArray = jsonData?["results"] as? [[String: AnyObject]]else{
-                displayError(string: "results is not part of the data")
-                return
-            }
             
-            performUIUpdatesOnMain {
-                completionHandeler(localStudentArray)
+            //we check if there is an error
+            if error == nil {
+                // if error is nil we force down cast the localStudentArray
+                let localStudentArray = jsonData?["results"] as! [[String: AnyObject]]
+                //perform updates on main with no error and localStudentArray
+                performUIUpdatesOnMain {
+                    completionHandeler(localStudentArray, error)
+                }
+            }else{
+                //we have an error in this case we set localStudentArray as an empty array and perform the completion handelet with localStudentArray and a no nil error 
+                let localStudentArray = [[String:AnyObject]]()
+                performUIUpdatesOnMain {
+                    completionHandeler(localStudentArray, error)
+                }
             }
-            
            
         }
         task.resume()

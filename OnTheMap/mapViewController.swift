@@ -30,7 +30,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let parametersFor100 = ["order":"-updatedAt" as AnyObject,"limit":100 as AnyObject]
         //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
         //create a closure to populate the map from the array of students returned by the method. We also save the student array into the ParseClient shared instance to be used latter. 
-        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
+        ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray, error in
+            
+            //check if we have connectivity error
+            guard (error?.localizedDescription != "The Internet connection appears to be offline.")else{
+                self.connectivityAlert(_title: "No internet Connection", "Can not load since there is no internet connectivity, please connect to the internet and try again")
+                return
+            }
+            // check if we have an error of other type
+            guard (error == nil) else{
+                self.connectivityAlert(_title: "Error", "There was an error \(error?.localizedDescription)")
+                print("we do see this")
+                return
+            }
+
                 self.closureToPopulateTheMap(localStudentArray)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
@@ -76,32 +89,56 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func refresh(_ sender: AnyObject) {
         
-        if internetStatus! == 0 {
-            connectivityAlert(_title:"No internet", "We can not refresh since there is no internet connection, please connect to the internet and try again")
-        }else{
+      
             //remove all the annotations
             mapView.removeAnnotations(mapView.annotations)
             let parametersFor100 = ["order":"-updatedAt" as AnyObject,"limit":100 as AnyObject]
             //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
             //create a closure to populate the map
-            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
-            
+            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray, error in
+                //check if we have connectivity error
+                guard (error?.localizedDescription != "The Internet connection appears to be offline.")else{
+                    self.connectivityAlert(_title: "No internet Connection", "Can not refresh since there is no internet connectivity, please connect to the internet and try again")
+                    return
+                }
+                // check if we have an error of other type
+                guard (error == nil) else{
+                    self.connectivityAlert(_title: "Error", "There was an error \(error?.localizedDescription)")
+                    print("we do see this")
+                    return
+                }
+
                     self.closureToPopulateTheMap(localStudentArray)
             
             }
-        }
+        
 
     }
     
     @IBAction func postStudent(_ sender: AnyObject) {
-        if internetStatus! == 0 {
+        /*if internetStatus! == 0 {
             connectivityAlert(_title:"No internet", "We can not post since there is no internet connection, please connect to the internet and try again")
-        }else{
+        }else*/
         
             //set the parameters to search students with unique key the same as the user
             let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
             // call this method to return an array of type [String: AnyObject] where the uniqueKey is the same as the userId
-            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray in
+            ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parameters, nil)){ localStudentArray, error in
+                
+                
+                //check if we have connectivity error
+                guard (error?.localizedDescription != "The Internet connection appears to be offline.")else{
+                 self.connectivityAlert(_title: "No internet Connection", "Can not post since there is no internet connectivity, please connect to the internet and try again")
+                 return
+                 }
+                // check if we have an error of other type
+                guard (error == nil) else{
+                    self.connectivityAlert(_title: "Error", "There was an error \(error?.localizedDescription)")
+                    print("we do see this")
+                    return
+                }
+
+
                 //if the localStudentArray.count is more than 0, that means the student was already posted otherwise the student was nonexisting.
                 if localStudentArray.count > 0 {
                     //we set up MyStudent to be the first student in this aray if exists
@@ -132,7 +169,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
                 }
             }
-        }
+        
         
         
     }
