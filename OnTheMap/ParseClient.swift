@@ -130,9 +130,6 @@ class ParseClient: NSObject{
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
         jsonData = self.closures(data, response, error)
             
-            func displayError(string:String){
-                print(string)
-            }
             
             guard let jsonData = jsonData else{
                 print("the jsonData for the method \(methodtype) of type \(type) failed")

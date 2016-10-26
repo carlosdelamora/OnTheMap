@@ -162,9 +162,11 @@ class UDClient:NSObject{
                 performUIUpdatesOnMain {
                     print(logoutSessionID)
                 
-                let viewController = hostViewController.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                //let viewController = hostViewController.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
                     
-                hostViewController.present(viewController, animated: true, completion: nil)
+                //hostViewController.present(viewController, animated: true, completion: nil)
+                  hostViewController.dismiss(animated: true, completion: nil)
+                    
                 }
             }
             task.resume()

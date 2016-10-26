@@ -26,7 +26,7 @@ class TableViewController: UITableViewController{
         if internetStatus! == 0{
             connectivityAlert(_title: "No internet Connection", "We can not refresh the table because there is no iternet connection")
         }else{
-            let parametersFor100 = ["limit":100 as AnyObject]
+            let parametersFor100 = ["order":"-updatedAt" as AnyObject,"limit":100 as AnyObject]
             //create a closure with self.tavleViewReloadData
             ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
                 StudentModel.sharedInstance().studentArray = localStudentArray.map({student($0)})

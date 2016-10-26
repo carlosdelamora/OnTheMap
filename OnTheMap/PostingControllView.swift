@@ -189,7 +189,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
             StudentModel.sharedInstance().dictionaryOfMyStudent["createdAt"] = StudentModel.sharedInstance().myStudent!.createdAt as AnyObject
             //objectId should not change 
             StudentModel.sharedInstance().dictionaryOfMyStudent["objectId"] = StudentModel.sharedInstance().myStudent!.objectId as AnyObject
-            ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + (StudentModel.sharedInstance().myStudent?.objectId)!), "PUT", self){ jsonData in
+            ParseClient.sharedInstance().parsePUTorPostMethod(ParseClient.sharedInstance().URLParseMethod(nil, "/" + "\(StudentModel.sharedInstance().myStudent!.objectId)"), "PUT", self){ jsonData in
             
                 guard let updatedAt = jsonData["updatedAt"] else{
                     print( "error with the put method")

@@ -27,7 +27,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         //remove all the annotations
         mapView.removeAnnotations(mapView.annotations)
-        let parametersFor100 = ["limit":100 as AnyObject]
+        let parametersFor100 = ["order":"-updatedAt" as AnyObject,"limit":100 as AnyObject]
         //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
         //create a closure to populate the map from the array of students returned by the method. We also save the student array into the ParseClient shared instance to be used latter. 
         ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
@@ -81,7 +81,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }else{
             //remove all the annotations
             mapView.removeAnnotations(mapView.annotations)
-            let parametersFor100 = ["limit":100 as AnyObject]
+            let parametersFor100 = ["order":"-updatedAt" as AnyObject,"limit":100 as AnyObject]
             //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
             //create a closure to populate the map
             ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray in
