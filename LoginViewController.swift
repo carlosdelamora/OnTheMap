@@ -73,6 +73,7 @@ class LoginViewController: UIViewController{
                     }))
                 }
             }else{
+                //The tab bar is instanciated for the first time
                 UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/session"), "POST", username: emailTextField.text, password: passwordTextField.text, hostViewController: self)
             }
         }

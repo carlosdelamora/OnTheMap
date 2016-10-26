@@ -154,7 +154,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     
                          alertController.addAction(UIAlertAction(title: "Override", style: .default, handler: { (UIAlertAction) in
                              alertController.dismiss(animated: true, completion: nil)
-                        
+                            //Posting is instanciated for the first time
                             let navigationPostController = self.storyboard?.instantiateViewController(withIdentifier: "PostingNavigationController")
                             self.present(navigationPostController!, animated: true)
                         }))

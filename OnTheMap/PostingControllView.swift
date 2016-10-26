@@ -149,8 +149,9 @@ class PostingControllView: UIViewController, UITextViewDelegate{
             let message = "We can not submit your request given that there is no internet connection, please connect and try again"
             noConnectionAlert(message)
         }
-       StudentModel.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text as AnyObject
-       StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text as AnyObject
+       StudentModel.sharedInstance().dictionaryOfMyStudent["mediaURL"] = URLTextView.text.replacingOccurrences(of: "\n", with: "") as AnyObject
+       StudentModel.sharedInstance().dictionaryOfMyStudent["mapString"] = mapLocationText.text.replacingOccurrences(of: "\n", with: "") as AnyObject
+        
         // we should do this method "POST" when we have no student i.e. when myStudent is nil
         
         if StudentModel.sharedInstance().myStudent == nil{
@@ -175,8 +176,9 @@ class PostingControllView: UIViewController, UITextViewDelegate{
                 print("student was posted")
                 performUIUpdatesOnMain {
                     //return back to mapViewController once the myStudents has been created
-                    let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-                    self.present(Controller!, animated: true, completion: nil)
+                    //let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
+                    //self.present(Controller!, animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
                     
                 
