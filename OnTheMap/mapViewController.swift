@@ -19,17 +19,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewWillAppear(true)
         let navigationController = self.navigationController
         navigationController?.isNavigationBarHidden = false
+        //We check the internet status evrytime the view appears
+        internetStatus = internetReach.currentReachabilityStatus().rawValue
+        //add an observer to check change of internet status
+        NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
         
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        //Re populate the map evrytime the view shows up
         //remove all the annotations
         mapView.removeAnnotations(mapView.annotations)
         let parametersFor100 = ["order":"-updatedAt" as AnyObject,"limit":100 as AnyObject]
         //obtain the new student array and set it equal to ParseCLient.SharedInstance.studentArray to repopulate the map
-        //create a closure to populate the map from the array of students returned by the method. We also save the student array into the ParseClient shared instance to be used latter. 
+        //create a closure to populate the map from the array of students returned by the method. We also save the student array into the ParseClient shared instance to be used latter.
         ParseClient.sharedInstance().parseGetMethod(ParseClient.sharedInstance().URLParseMethod(parametersFor100, nil)){ localStudentArray, error in
             
             //check if we have connectivity error
@@ -43,11 +43,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 print("we do see this")
                 return
             }
-
-                self.closureToPopulateTheMap(localStudentArray)
+            
+            self.closureToPopulateTheMap(localStudentArray)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
+        
     }
+    
 
     func statusChanged(_ selector: Notification){
         internetStatus = (selector.object as! Reachability).currentReachabilityStatus().rawValue

@@ -31,8 +31,7 @@ class LoginViewController: UIViewController{
         subscribeToNotification(NSNotification.Name.UIKeyboardDidShow.rawValue, selector: #selector(keyboardDidShow))
         subscribeToNotification(NSNotification.Name.UIKeyboardDidHide.rawValue, selector: #selector(keyboardDidHide))
         
-        //we check what is the internet status
-        internetStatus = internetReach.currentReachabilityStatus().rawValue
+        
         //we add self as an observer with a notification when the network status changed 
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityStatusChanged), name: .reachabilityChanged, object: nil)
     }
@@ -40,6 +39,13 @@ class LoginViewController: UIViewController{
     func reachabilityStatusChanged(_ sender: NSNotification){
         internetStatus = (sender.object as! Reachability).currentReachabilityStatus().rawValue
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        passwordTextField.text = ""
+        //we check what is the internet status evrytime the viewAppears
+        internetStatus = internetReach.currentReachabilityStatus().rawValue
     }
     
     override func viewWillDisappear(_ animated: Bool) {

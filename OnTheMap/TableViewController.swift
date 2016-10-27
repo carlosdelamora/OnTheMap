@@ -11,9 +11,11 @@ import UIKit
 
 class TableViewController: UITableViewController{
     
-    override func viewDidLoad() {
-         super.viewDidLoad()
-        //subscribe to notification to see if the internet connection has changed
+    override func viewWillAppear(_ animated: Bool){
+         super.viewWillAppear(true)
+        //check the internet status evrytime the view appears
+        internetStatus = internetReach.currentReachabilityStatus().rawValue
+        //subscribe to notification to see if the internet connection changes
         NotificationCenter.default.addObserver(self, selector: #selector(statusChanged), name: .reachabilityChanged, object: nil)
     }
     
@@ -50,9 +52,7 @@ class TableViewController: UITableViewController{
     }
     
     @IBAction func postButton(_ sender: AnyObject) {
-        /*if internetStatus! == 0{
-            connectivityAlert(_title: "No internet Connection", "Can not post since there is no internet connectivity, please connect to the internet and try again")
-        }else{*/
+       
             //set the parameters to search students with unique key the same as the user
             let parameters = ["where":"{\"uniqueKey\":\"\(UDClient.sharedInstance().userID!)\"}" as AnyObject]
             // call this method to return an array of type [String: AnyObject] where the uniqueKey is the same as the userId

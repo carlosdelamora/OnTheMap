@@ -36,14 +36,13 @@ class PostingControllView: UIViewController, UITextViewDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print(self.shouldAutorotate)
+      
         super.viewWillAppear(true)
         mapLocationText.delegate = self
         URLTextView.delegate = self
         resetToInitalConditions()
         
         //Using the GET method we got the firstname and lastname of the user set it up to student in this class
-        
         UDClient.sharedInstance().udacityMethod(UDClient.sharedInstance().URLUdacityMethod("/users/\(UDClient.sharedInstance().userID!)"), "GET", username: nil, password: nil, hostViewController: self)
         
         //add an observer to see if the internet conection changed
