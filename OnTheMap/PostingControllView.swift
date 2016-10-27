@@ -176,8 +176,6 @@ class PostingControllView: UIViewController, UITextViewDelegate{
                 print("student was posted")
                 performUIUpdatesOnMain {
                     //return back to mapViewController once the myStudents has been created
-                    //let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-                    //self.present(Controller!, animated: true, completion: nil)
                     self.dismiss(animated: true, completion: nil)
                 }
                     
@@ -207,8 +205,7 @@ class PostingControllView: UIViewController, UITextViewDelegate{
                 
                     performUIUpdatesOnMain {
                         //return back to mapViewController once the myStudents has been created
-                        let Controller = self.storyboard?.instantiateViewController(withIdentifier: "Tab Bar Controller")
-                        self.present(Controller!, animated: true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
     
