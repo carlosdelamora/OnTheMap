@@ -22,6 +22,9 @@ class LoginViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //configure the UI
+        configureUI()
         //configure set the delegates of the text fields to self
         configureTextField()
         
@@ -159,5 +162,17 @@ extension LoginViewController {
     
     override var shouldAutorotate: Bool{
         return false
+    }
+    
+    fileprivate func configureUI() {
+        
+        // configure background gradient
+        let backgroundGradient = CAGradientLayer()
+        backgroundGradient.colors = [Constants.UI.LoginColorTop, Constants.UI.LoginColorBottom]
+        backgroundGradient.locations = [0, 1]
+        backgroundGradient.frame = view.frame
+        view.layer.insertSublayer(backgroundGradient, at: 0)
+        
+
     }
 }
