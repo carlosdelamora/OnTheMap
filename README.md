@@ -1,9 +1,6 @@
-# OnTheMap
-Udacity Project 
-
 ## OnTheMap
-Is an application writen in Xcode 8 using **swift 3.0** required as part of the Udacity nano-degree. The appication allows Udacity
-students to login and mark down a location where they are studing. 
+Is an application written in Xcode 8 using **swift 3.0** required as part of the Udacity nano-degree. The application allows Udacity
+students to login and mark down a location where they are studying. 
 
 ## Who can use it? 
 
