@@ -23,16 +23,16 @@ struct student{
     let updateAt: String
     let annotation = MKPointAnnotation()
     init(_ dictionary:[String:AnyObject]){
-        self.createdAt = dictionary["createdAt"] as! String
-        self.firstName = dictionary["firstName"] as! String
-        self.lastName = dictionary["lastName"] as! String
-        self.latitude = dictionary["latitude"] as! Double
-        self.longitude = dictionary["longitude"] as! Double
-        self.mapString = dictionary["mapString"] as! String
-        self.mediaURL = dictionary["mediaURL"] as! String
-        self.objectId = dictionary["objectId"] as! String 
-        self.uniquekey = String(describing: dictionary["uniqueKey"])
-        self.updateAt = dictionary["updatedAt"] as! String
+        self.createdAt = dictionary["createdAt"] as? String ?? ""
+        self.firstName = dictionary["firstName"] as? String ?? ""
+        self.lastName = dictionary["lastName"] as? String ?? ""
+        self.latitude = dictionary["latitude"] as? Double ?? Double(20.0)
+        self.longitude = dictionary["longitude"] as? Double ?? Double(0.0)
+        self.mapString = dictionary["mapString"] as? String ?? ""
+        self.mediaURL = dictionary["mediaURL"] as? String ?? ""
+        self.objectId = dictionary["objectId"] as? String ?? ""
+        self.uniquekey = String(describing: dictionary["uniqueKey"]) 
+        self.updateAt = dictionary["updatedAt"] as? String ?? ""
         let coordinates = CLLocationCoordinate2D(latitude: self.latitude , longitude: self.longitude)
         self.annotation.coordinate = coordinates
         self.annotation.title = "\(self.firstName) \(self.lastName)"
