@@ -102,21 +102,21 @@ class UDClient:NSObject{
                 
                 self.sessionID = sessionDirctionary["id"]! as? String
                 
-                guard let accountDictionary = jsonData!["account"] as? [String:AnyObject]else{
+                guard let accountDictionary = jsonData!["account"] as? [String: AnyObject]else{
                     displayError(string: "account was not found")
                     return
                 }
-                guard (accountDictionary["registered"] as? Int)! == 1 else{
+                guard (accountDictionary["registered"]! as? Bool)  == true else{
                     displayError(string:"not registered")
-                    print((accountDictionary["registered"] as? Int))
+                    print(type(of: accountDictionary["registered"]!))
                     return
                 }
                 //for some unknown reason userID = accountDictionary["key"] as? Int fails that is why need the constant number
                 
                 guard let number = accountDictionary["key"] as? String else{
                     displayError(string: "the user ID does not exist")
-                    print(accountDictionary["key"])
-                    print(accountDictionary["key"] as? Int)
+                    //print(accountDictionary["key"])
+                    //print(accountDictionary["key"] as? Int)
                     return
                 }
                 
@@ -127,8 +127,7 @@ class UDClient:NSObject{
                 
                 self.userID = Int(number)!
                 StudentModel.sharedInstance().dictionaryOfMyStudent["uniqueKey"] = Int(number)! as AnyObject
-                print(self.userID)
-                
+                                
             }
             task.resume()
         case "DELETE":
